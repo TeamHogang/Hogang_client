@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGreaterThan } from "@fortawesome/free-solid-svg-icons";
+import {
+  faGreaterThan,
+  faLocationDot,
+} from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const Container = styled.div`
   display: flex;
@@ -12,7 +16,7 @@ const Container = styled.div`
   text-align: center;
 `;
 
-const Profile = styled.div`
+const Profile = styled(motion.div)`
   margin: 65px 0 20px 0;
   display: flex;
   text-align: center;
@@ -23,13 +27,23 @@ const Profile = styled.div`
 
 const MapContainer = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: center;
+  /* align-items: center; */
+  /* justify-content: center; */
   border: 1px solid #e6e8e7;
   border-radius: 10px;
   width: 300px;
   height: 200px;
   font-weight: 700px;
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/a/a6/Map_Seoul-teukbyeolsi.svg");
+  background-size: 300px 200px;
+`;
+
+const MarkerContainer = styled(motion.div)`
+  display: flex;
+  width: 300px;
+  justify-content: space-evenly;
+  align-items: center;
+  color: #6667ab;
 `;
 
 const BoardContainer = styled.div`
@@ -115,8 +129,29 @@ function Home() {
 
   return (
     <Container>
-      <Profile>안녕하세요 호강 님.</Profile>
-      <MapContainer>지도 들어갈 공간</MapContainer>
+      <Profile
+        animate={{ opacity: 1 }}
+        initial={{ opacity: 0 }}
+        transition={{ delay: 1 }}
+      >
+        안녕하세요 호강 님.
+      </Profile>
+      <MapContainer>
+        <MarkerContainer
+          animate={{
+            y: ["0rem", "-1rem"],
+          }}
+          transition={{
+            yoyo: Infinity,
+            duration: 0.8,
+            ease: "easeOut",
+            delay: 1,
+          }}
+        >
+          <FontAwesomeIcon icon={faLocationDot} size="2x" style={{}} />
+          <FontAwesomeIcon icon={faLocationDot} size="2x" />
+        </MarkerContainer>
+      </MapContainer>
       <BoardContainer>
         <BoardTopContainer>
           <BoardName>게시판</BoardName>
