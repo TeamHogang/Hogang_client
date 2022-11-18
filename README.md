@@ -6,8 +6,11 @@
 
 ## 🍀 Team Member
 김지호(Frontend): https://github.com/kimjiho1125
+
 박광렬(Backend): https://github.com/pgrgrgrgr
+
 정원호(Frontend): https://github.com/wonho1401
+
 최강희(Backend): https://github.com/rkdgml3577
 
 <br />
