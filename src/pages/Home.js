@@ -126,6 +126,9 @@ function Home() {
   const boardHandler = () => {
     navigate("/board");
   };
+  const mapHandler = () => {
+    navigate("/map");
+  };
 
   return (
     <Container>
@@ -136,7 +139,7 @@ function Home() {
       >
         안녕하세요 호강 님.
       </Profile>
-      <MapContainer>
+      <MapContainer onClick={mapHandler}>
         <MarkerContainer
           animate={{
             y: ["0rem", "-1rem"],
