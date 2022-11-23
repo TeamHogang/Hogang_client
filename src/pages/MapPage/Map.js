@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from "react";
 import { markerdata } from "../../data/markerData";
-import "./customOverlay.css"
+import "./customOverlay.css";
 
 const { kakao } = window;
 
@@ -41,7 +41,7 @@ const Map = () => {
       // 커스텀 오버레이에 표출될 내용
       var content = document.createElement("div");
       content.className = "wrap";
-      
+
       var info = document.createElement("div");
       info.className = "info";
       content.appendChild(info);
@@ -64,13 +64,14 @@ const Map = () => {
       info.appendChild(body);
 
       var img = document.createElement("div");
-      img.className = "img"
-      img.innerHTML = '<img src="https://cfile181.uf.daum.net/image/250649365602043421936D" width="73" height="70">'
+      img.className = "img";
+      img.innerHTML =
+        '<img src="https://cfile181.uf.daum.net/image/250649365602043421936D" width="73" height="70">';
       body.appendChild(img);
 
       var desc = document.createElement("div");
       desc.className = "desc";
-      desc.innerHTML = `${el.content}`
+      desc.innerHTML = `${el.content}`;
       body.appendChild(desc);
 
       // 커스텀 오버레이 생성
@@ -92,6 +93,6 @@ const Map = () => {
       style={{ width: "100vw", height: "100vh" }}
     ></div>
   );
-};;
+};
 
 export default Map;
