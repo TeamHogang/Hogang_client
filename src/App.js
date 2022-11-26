@@ -4,7 +4,7 @@ import { lazy, Suspense } from "react";
 
 const Header = lazy(() => import("./components/Header"));
 const Home = lazy(() => import("./pages/Home"));
-const Map = lazy(() => import("./pages/MapPage/Map"));
+const Map = lazy(() => import("./pages/MapPage/MapPage"));
 
 function App() {
   return (
