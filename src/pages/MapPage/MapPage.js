@@ -9,6 +9,42 @@ const MapContainer = styled.div`
   align-items: center;
 `;
 
+const SmokingAreaButton = styled.button`
+  position: absolute;
+  top: 80px;
+  right: 150px;
+  background-color: #ffffff;
+  color: #000000;
+  width: 130px;
+  height: 40px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 800ms ease all;
+  outline: none;
+  border-radius: 5px;
+  border-color: #ffffff;
+  font-weight: 700;
+  z-index: 999;
+`;
+
+const NonSmokingAreaButton = styled.button`
+  position: absolute;
+  top: 80px;
+  right: 0px;
+  background-color: #ffffff;
+  color: #000000;
+  width: 130px;
+  height: 40px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 800ms ease all;
+  outline: none;
+  border-radius: 5px;
+  border-color: #ffffff;
+  font-weight: 700;
+  z-index: 999;
+`;
+
 const MarkerDetailContainer = styled.div`
   position: absolute;
   left: 0;
@@ -217,6 +253,9 @@ function MapPage() {
             />
           ))}
         </Map>
+
+        <SmokingAreaButton>흡연 구역</SmokingAreaButton>
+        <NonSmokingAreaButton>금연 구역</NonSmokingAreaButton>
       </MapContainer>
     </div>
   );
