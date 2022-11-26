@@ -1,7 +1,9 @@
 import React, { useEffect, useState} from 'react';
 import styled from "styled-components";
 import { useNavigate } from 'react-router-dom';
-import { Map, MapMarker} from "react-kakao-maps-sdk";
+import { Map, MapMarker } from "react-kakao-maps-sdk";
+import refreshIcon from "../../img/refreshIcon.png";
+import plusIcon from "../../img/plusIcon.png";
 
 const MapContainer = styled.div`
   display: flex;
@@ -25,6 +27,7 @@ const SmokingAreaButton = styled.button`
   border-color: #ffffff;
   font-weight: 700;
   z-index: 999;
+  opacity: 0.8;
 `;
 
 const NonSmokingAreaButton = styled.button`
@@ -43,6 +46,43 @@ const NonSmokingAreaButton = styled.button`
   border-color: #ffffff;
   font-weight: 700;
   z-index: 999;
+  opacity: 0.8;
+`;
+
+const UpdateLocationButton = styled.button`
+  position: absolute;
+  background-image: url(${refreshIcon});
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: #ffffff;
+  bottom: 100px;
+  right: 5px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  transition: 800ms ease all;
+  border-radius: 20px;
+  border-color: #ffffff;
+  z-index: 999;
+  opacity: 0.8;
+`;
+
+const PlusSmokingAreaButton = styled.button`
+  position: absolute;
+  background-image: url(${plusIcon});
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: #ffffff;
+  bottom: 50px;
+  right: 5px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  transition: 800ms ease all;
+  border-radius: 20px;
+  border-color: #ffffff;
+  z-index: 999;
+  opacity: 0.8;
 `;
 
 const MarkerDetailContainer = styled.div`
@@ -221,6 +261,7 @@ function MapPage() {
   // const addSmokingLocationHandler = () => {
   //   navigate("/addSmokingLocation");
   // };
+
   return (
     <div>
       <MapContainer>
@@ -256,6 +297,8 @@ function MapPage() {
 
         <SmokingAreaButton>흡연 구역</SmokingAreaButton>
         <NonSmokingAreaButton>금연 구역</NonSmokingAreaButton>
+        <UpdateLocationButton />
+        <PlusSmokingAreaButton />
       </MapContainer>
     </div>
   );
