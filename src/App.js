@@ -5,6 +5,7 @@ import { lazy, Suspense } from "react";
 const Header = lazy(() => import("./components/Header"));
 const Home = lazy(() => import("./pages/Home"));
 const Map = lazy(() => import("./pages/MapPage/MapPage"));
+const AddLocation = lazy(() => import("./pages/AddLocationPage/AddLocation"));
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/map" element={<Map />} />
+            <Route path="/map" element={<AddLocation />} />
           </Routes>
         </Suspense>
       </BrowserRouter>
