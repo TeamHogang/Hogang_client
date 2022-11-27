@@ -168,7 +168,7 @@ function MapPage() {
       info: "담배피기 좋은 곳1",
     }
   ];
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -258,9 +258,9 @@ function MapPage() {
   //   navigate("/");
   // };
 
-  // const addSmokingLocationHandler = () => {
-  //   navigate("/addSmokingLocation");
-  // };
+  const addSmokingLocationHandler = () => {
+    navigate("/AddLocation");
+  };
 
   return (
     <div>
@@ -298,7 +298,7 @@ function MapPage() {
         <SmokingAreaButton>흡연 구역</SmokingAreaButton>
         <NonSmokingAreaButton>금연 구역</NonSmokingAreaButton>
         <UpdateLocationButton />
-        <PlusSmokingAreaButton />
+        <PlusSmokingAreaButton onClick={addSmokingLocationHandler} />
       </MapContainer>
     </div>
   );

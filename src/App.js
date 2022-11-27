@@ -19,10 +19,10 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/map" element={<Map />} />
+            <Route path="/AddLocation" element={<AddLocation />} />
             <Route path="/board" element={<Board />} />
             <Route path="/new" element={<WriteFeed />} />
             <Route path="/feed/:id" element={<Feed />} />
-            <Route path="/map" element={<AddLocation />} />
           </Routes>
         </Suspense>
       </BrowserRouter>
