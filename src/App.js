@@ -4,6 +4,9 @@ import { lazy, Suspense } from "react";
 
 const Header = lazy(() => import("./components/Header"));
 const Home = lazy(() => import("./pages/Home"));
+const Board = lazy(() => import("./pages/BoardPage/Board"));
+const Feed = lazy(() => import("./pages/BoardPage/Feed"));
+const WriteFeed = lazy(() => import("./pages/BoardPage/WriteFeed"));
 const Map = lazy(() => import("./pages/MapPage/MapPage"));
 const AddLocation = lazy(() => import("./pages/AddLocationPage/AddLocation"));
 
@@ -17,6 +20,9 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/map" element={<Map />} />
             <Route path="/AddLocation" element={<AddLocation />} />
+            <Route path="/board" element={<Board />} />
+            <Route path="/new" element={<WriteFeed />} />
+            <Route path="/feed/:id" element={<Feed />} />
           </Routes>
         </Suspense>
       </BrowserRouter>
