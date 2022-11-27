@@ -6,6 +6,8 @@ const Header = lazy(() => import("./components/Header"));
 const Home = lazy(() => import("./pages/Home"));
 const Map = lazy(() => import("./pages/MapPage/Map"));
 const Board = lazy(() => import("./pages/BoardPage/Board"));
+const Feed = lazy(() => import("./pages/BoardPage/Feed"));
+const WriteFeed = lazy(() => import("./pages/BoardPage/WriteFeed"));
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/map" element={<Map />} />
             <Route path="/board" element={<Board />} />
+            <Route path="/new" element={<WriteFeed />} />
+            <Route path="/feed/:id" element={<Feed />} />
           </Routes>
         </Suspense>
       </BrowserRouter>

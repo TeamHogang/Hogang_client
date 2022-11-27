@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
 import styled from "styled-components";
 import axios from "axios";
+import Loader from "../../components/Loader";
 
 const Container = styled.div`
   display: flex;
@@ -191,12 +192,13 @@ function Board() {
       <ArticleContainer>
         {articles.map((article, index) => (
           <Article key={index}>
-            {articles.length - 1 == index ? (
+            {articles.length - 1 === index ? (
               <div ref={ref}>
                 {/* 마지막 요소라면 ref를 추가하여 inView를 true로 변경시킴. */}
                 <ArticleNickname>{article.nickname}</ArticleNickname>
                 <Articletitle>{article.title}</Articletitle>
                 <ArticleDate>{article.date}</ArticleDate>
+                {load && <Loader />}
               </div>
             ) : (
               <div>
@@ -208,6 +210,7 @@ function Board() {
           </Article>
         ))}
       </ArticleContainer>
+      <Loader />
       <WriteButton onClick={writeHandler}>글쓰기</WriteButton>
     </Container>
   );
