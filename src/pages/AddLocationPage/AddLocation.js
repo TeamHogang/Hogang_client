@@ -9,6 +9,24 @@ const MapContainer = styled.div`
   align-items: center;
 `;
 
+const AreaSelectButton = styled.button`
+  position: absolute;
+  bottom: 30px;
+  background-color: #ffffff;
+  color: #000000;
+  width: 130px;
+  height: 50px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 800ms ease all;
+  outline: none;
+  border-radius: 5px;
+  border-color: #ffffff;
+  font-weight: 700;
+  z-index: 999;
+  opacity: 0.8;
+`;
+
 function AddLocation() {
   const [myLocation, setMyLocation] = useState({
     center: {
@@ -63,6 +81,7 @@ function AddLocation() {
               >
           {position && <MapMarker position={position}/>}        
         </Map>
+        <AreaSelectButton>선택 완료</AreaSelectButton>
       </MapContainer>
     </div>
   );
