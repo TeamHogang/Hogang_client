@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
+import DetailModal from "../../components/DetailModal";
 
 const MapContainer = styled.div`
   display: flex;
@@ -38,6 +39,10 @@ function AddLocation() {
   });
 
   const [position, setPosition] = useState()
+  const [isOpen, setIsOpen] = useState(false);
+  const onClickButton = () => {
+        setIsOpen(true);
+    }
     
   useEffect(() => {
     if (navigator.geolocation) {
@@ -73,15 +78,25 @@ function AddLocation() {
             width: "100vw",
             height: "100vh",
           }}
-          level={5} //지도의 확대 레벨
-          onClick={(_t, MouseEvent) => setPosition({
-            lat: MouseEvent.latLng.getLat(),
-            lng: MouseEvent.latLng.getLng(),    
-          })}
-              >
-          {position && <MapMarker position={position}/>}        
+          level={3} //지도의 확대 레벨
+          onClick={(_t, MouseEvent) =>
+            setPosition({
+              lat: MouseEvent.latLng.getLat(),
+              lng: MouseEvent.latLng.getLng(),
+            })
+          }
+        >
+          {position && <MapMarker position={position} />}
         </Map>
-        <AreaSelectButton>선택 완료</AreaSelectButton>
+        <AreaSelectButton onClick={onClickButton}>선택 완료</AreaSelectButton>
+        {isOpen && (
+          <DetailModal
+            open={isOpen}
+            onClose={() => {
+              setIsOpen(false);
+            }}
+          />
+        )}
       </MapContainer>
     </div>
   );
