@@ -16,7 +16,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/map" element={<Map />} />
-            <Route path="/map" element={<AddLocation />} />
+            <Route path="/AddLocation" element={<AddLocation />} />
           </Routes>
         </Suspense>
       </BrowserRouter>
