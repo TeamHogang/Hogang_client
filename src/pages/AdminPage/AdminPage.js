@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLessThan } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import Modal from "./Modal";
 
 const Container = styled.div`
   display: flex;
@@ -67,27 +68,60 @@ const DemandInfo = styled.div`
 
 function AdminPage() {
   const navigate = useNavigate();
+  const [modalOn, setModalOn] = useState(false);
+  const [selected, setSelected] = useState("");
+
+  const handleSave = (data) => {
+    // 수락할 시에 디비에 정보 저장
+  };
+
+  const modalHandler = (data) => {
+    setModalOn(true);
+    const selectedData = {
+      nickname: data.nickname,
+      info: data.info,
+      description: data.description,
+      photo: data.photo,
+    };
+    console.log(selectedData);
+    setSelected(setSelected);
+  };
+
+  const handleReject = () => {
+    setModalOn(false);
+  };
+
+  const handleSubmit = (data) => {
+    console.log(data);
+    handleSave(data);
+    setModalOn(false);
+  };
+
   const demands = [
     {
+      nickname: "원덩덩",
       info: "서울시 중구 필동로 1길 30",
+      description: "동국대학교 신공학관 9층",
+      photo:
+        "https://upload.wikimedia.org/wikipedia/commons/c/c2/DONGGUK_UNIVERSITY_%ED%8C%94%EC%A0%95%EB%8F%84.jpg",
     },
     {
-      info: "서울시 중구 필동로 1길 30",
+      info: "서울시 중구 필동로 2길 30",
     },
     {
-      info: "서울시 중구 필동로 1길 30",
+      info: "서울시 중구 필동로 3길 30",
     },
     {
-      info: "서울시 중구 필동로 1길 30",
+      info: "서울시 중구 필동로 4길 30",
     },
     {
-      info: "서울시 중구 필동로 1길 30",
+      info: "서울시 중구 필동로 5길 30",
     },
     {
-      info: "서울시 중구 필동로 1길 30",
+      info: "서울시 중구 필동로 6길 30",
     },
     {
-      info: "서울시 중구 필동로 1길 30",
+      info: "서울시 중구 필동로 7길 30",
     },
   ];
 
@@ -104,12 +138,32 @@ function AdminPage() {
       </SubHeaderContainer>
       <DemandContainer>
         {demands.map((demand, index) => (
-          <Demand key={index}>
-            <DemandTitle>흡연구역 요청</DemandTitle>
+          <Demand
+            key={index}
+            onClick={() => {
+              setModalOn(true);
+              const selectedData = {
+                nickname: demand.nickname,
+                info: demand.info,
+                description: demand.description,
+                photo: demand.photo,
+              };
+              console.log(selectedData);
+              setSelected(selectedData);
+            }}
+          >
+            <DemandTitle>흡연구역 요청 </DemandTitle>
             <DemandInfo>{demand.info}</DemandInfo>
           </Demand>
         ))}
       </DemandContainer>
+      {modalOn && (
+        <Modal
+          selectedData={selected}
+          handleReject={handleReject}
+          handleSubmit={handleSubmit}
+        />
+      )}
     </Container>
   );
 }
