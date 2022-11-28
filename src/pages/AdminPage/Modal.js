@@ -69,7 +69,7 @@ const SmokingImageNameContainer = styled.div`
 `;
 
 const SmokingImageContainer = styled.div`
-  margin: 20px;
+  margin: 15px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -86,7 +86,7 @@ const SmokingInfo = styled.div`
 const SmokingDemandInfo = styled.div`
   display: flex;
   justify-content: flex-start;
-  margin-top: 10px;
+  margin-top: 7px;
   font-size: small;
 `;
 
@@ -125,7 +125,12 @@ const RejectButton = styled.button`
   border-radius: 10px;
 `;
 
-const Modal = ({ selectedData, handleReject, handleSubmit }) => {
+const Modal = ({
+  selectedData,
+  handleReject,
+  handleSubmit,
+  modalOffHandler,
+}) => {
   const [selected, setSelected] = useState(selectedData);
   console.log(selected);
   const onReject = () => {
@@ -136,11 +141,15 @@ const Modal = ({ selectedData, handleReject, handleSubmit }) => {
     handleSubmit();
   };
 
+  const offHandler = () => {
+    modalOffHandler();
+  };
+
   return (
     <ModalContainer>
       <ModalWrapper>
         <ModalHeader>
-          <BackButton>
+          <BackButton onClick={offHandler}>
             <FontAwesomeIcon icon={faTimes} />
           </BackButton>
         </ModalHeader>

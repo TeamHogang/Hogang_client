@@ -75,20 +75,13 @@ function AdminPage() {
     // 수락할 시에 디비에 정보 저장
   };
 
-  const modalHandler = (data) => {
-    setModalOn(true);
-    const selectedData = {
-      nickname: data.nickname,
-      info: data.info,
-      description: data.description,
-      photo: data.photo,
-    };
-    console.log(selectedData);
-    setSelected(setSelected);
+  const modalOffHandler = () => {
+    setModalOn(false);
   };
 
   const handleReject = () => {
     setModalOn(false);
+    // 거절하고 나서 요청 디비에서 사라지도록 ~~
   };
 
   const handleSubmit = (data) => {
@@ -162,6 +155,7 @@ function AdminPage() {
           selectedData={selected}
           handleReject={handleReject}
           handleSubmit={handleSubmit}
+          modalOffHandler={modalOffHandler}
         />
       )}
     </Container>
