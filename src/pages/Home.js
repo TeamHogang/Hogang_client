@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -7,6 +7,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+// import axios from "axios";
 
 const Container = styled.div`
   display: flex;
@@ -16,13 +17,26 @@ const Container = styled.div`
   text-align: center;
 `;
 
+const SubHeaderContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 300px;
+  margin: 65px 0px 20px 0px;
+`;
+
 const Profile = styled(motion.div)`
-  margin: 65px 0 20px 0;
   display: flex;
   text-align: center;
-  width: 300px;
-  justify-content: flex-start;
+  /* margin-left: 20px; */
   font-weight: 700;
+`;
+
+const AdminButton = styled.div`
+  display: flex;
+  /* margin-right: 20px; */
+  font-weight: 500;
+  font-size: small;
 `;
 
 const MapContainer = styled.div`
@@ -33,6 +47,7 @@ const MapContainer = styled.div`
   border-radius: 10px;
   width: 300px;
   height: 200px;
+  margin: 0 20px;
   font-weight: 700px;
   background-image: url("https://upload.wikimedia.org/wikipedia/commons/a/a6/Map_Seoul-teukbyeolsi.svg");
   background-size: 300px 200px;
@@ -67,16 +82,19 @@ const BoardName = styled.div`
   font-weight: 900;
   text-decoration: underline;
   text-decoration-thickness: 3px;
+  /* margin-left: 20px; */
 `;
 
 const MoreDetail = styled.div`
   font-size: small;
   font-weight: 600;
+  /* margin-right: 20px; */
 `;
 
 const BoardBottomContainer = styled.div`
   margin-top: 20px;
   width: 300px;
+  /* margin-left: 40px; */
   display: flex;
   flex-direction: column;
 `;
@@ -105,6 +123,7 @@ const ArticleDate = styled.div`
 function Home() {
   const navigate = useNavigate();
   // const [articles, setArticles] = useState([]);
+  const [isAdmin, setIsAdmin] = useState(false);
   const articles = [
     {
       title: "테스트1",
@@ -130,15 +149,33 @@ function Home() {
     navigate("/map");
   };
 
+  const adminHandler = () => {
+    navigate("/admin");
+  };
+
+  useEffect(() => {
+    // Home 페이지 들어오자마자 Admin인지 아닌지 axios를 통해 확인.
+    //  if(axios~~) 해서 isAdmin true -> setIsAdmin(true);
+    setIsAdmin(true);
+  }, []);
+
   return (
     <Container>
-      <Profile
-        animate={{ opacity: 1 }}
-        initial={{ opacity: 0 }}
-        transition={{ delay: 1 }}
-      >
-        안녕하세요 호강 님.
-      </Profile>
+      <SubHeaderContainer>
+        <Profile
+          animate={{ opacity: 1 }}
+          initial={{ opacity: 0 }}
+          transition={{ delay: 1 }}
+        >
+          안녕하세요 호강 님.
+          {/* 닉네임으로 호강 자리 변경 */}
+        </Profile>
+        {isAdmin ? (
+          <AdminButton onClick={adminHandler}>관리자 페이지</AdminButton>
+        ) : (
+          <></>
+        )}
+      </SubHeaderContainer>
       <MapContainer onClick={mapHandler}>
         <MarkerContainer
           animate={{

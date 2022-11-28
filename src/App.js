@@ -9,6 +9,7 @@ const Feed = lazy(() => import("./pages/BoardPage/Feed"));
 const WriteFeed = lazy(() => import("./pages/BoardPage/WriteFeed"));
 const Map = lazy(() => import("./pages/MapPage/MapPage"));
 const AddLocation = lazy(() => import("./pages/AddLocationPage/AddLocation"));
+const AdminPage = lazy(() => import("./pages/AdminPage/AdminPage"));
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route path="/board" element={<Board />} />
             <Route path="/new" element={<WriteFeed />} />
             <Route path="/feed/:id" element={<Feed />} />
+            <Route path="/admin" element={<AdminPage />} />
           </Routes>
         </Suspense>
       </BrowserRouter>
