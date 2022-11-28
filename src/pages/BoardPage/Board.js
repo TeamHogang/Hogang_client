@@ -1,9 +1,11 @@
+/* eslint-disable */
 import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
 import styled from "styled-components";
-import axios from "axios";
+// import axios from "axios";
 import Loader from "../../components/Loader";
+import SearchBar from "../../components/SearchBar";
 
 const Container = styled.div`
   display: flex;
@@ -13,8 +15,9 @@ const Container = styled.div`
   text-align: center;
 `;
 
-const SearchBar = styled.div`
-  margin: 65px 0 20px 0;
+const Search = styled.div`
+  margin-top: 65px;
+  margin-left: 20px;
 `;
 
 const NoticeContainer = styled.div`
@@ -79,8 +82,6 @@ const ArticleDate = styled.div`
 `;
 
 const WriteButton = styled.button`
-  position: fixed;
-  top: 700px;
   background-color: #a6a6a6;
   color: #ffffff;
   width: 130px;
@@ -92,6 +93,10 @@ const WriteButton = styled.button`
   border-radius: 20px;
   font-weight: 700;
   z-index: 999;
+  position: fixed;
+  font-weight: 700;
+  left: 50%;
+  transform: translate(-50%, 300%);
 `;
 
 function Board() {
@@ -178,7 +183,9 @@ function Board() {
 
   return (
     <Container>
-      <SearchBar>검색창 들어갈 자리</SearchBar>
+      <Search>
+        <SearchBar />
+      </Search>
       <NoticeContainer>
         <Notice>공지사항</Notice>
         {notices.map((notice, index) => (
