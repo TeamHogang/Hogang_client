@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -11,6 +11,7 @@ const HeaderContainer = styled.div`
   /* box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; */
   position: fixed;
   top: 0;
+  left: 0;
   z-index: 999;
   width: 100%;
   margin: 0px;
