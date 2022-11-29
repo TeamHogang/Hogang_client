@@ -150,6 +150,7 @@ const DetailContent = styled.div`
 `;
 
 function MapPage() {
+  /*global kakao*/
   const [myLocation, setMyLocation] = useState({
     center: {
       lat: 37.5590083,
@@ -159,34 +160,34 @@ function MapPage() {
     isLoading: true,
   });
   //const [markers, setMarkers] = useState([]);
-  const markers = [ //마커 확인용
+  const markers = [
+    //마커 확인용
     {
       id: 0,
       title: "흡연구역1",
       lat: 37.557609,
       lng: 127.0003595,
       info: "담배피기 좋은 곳1",
-    }
+    },
   ];
   const navigate = useNavigate();
 
   useEffect(() => {
     if (navigator.geolocation) {
       // GeoLocation을 이용하여 접속 위치를 얻어옴
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          // setLocation을 이용하여 지도의 중심위치를 수정
-          setMyLocation((prev) => ({
-            ...prev,
-            center: {
-              lat: position.coords.latitude,//위도
-              lng: position.coords.longitude,//경도
-            },
-            isLoading: false,
-          }));
-        }
-      );
-    } else { // GeoLocation을 정상적으로 이용할 수 없는 경우 오류 메세지 출력 
+      navigator.geolocation.getCurrentPosition((position) => {
+        // setLocation을 이용하여 지도의 중심위치를 수정
+        setMyLocation((prev) => ({
+          ...prev,
+          center: {
+            lat: position.coords.latitude, //위도
+            lng: position.coords.longitude, //경도
+          },
+          isLoading: false,
+        }));
+      });
+    } else {
+      // GeoLocation을 정상적으로 이용할 수 없는 경우 오류 메세지 출력
       setMyLocation((prev) => ({
         ...prev,
         errMsg: "geolocation을 사용할 수 없습니다.",
@@ -220,7 +221,6 @@ function MapPage() {
   //     </MarkerDetailContainer>
   //     );
   // };
-  
 
   // for (let i = 0; i < markers.length; i++){
   //   markers[i].content = <MarkerDetail id={markers[i].id} />;
@@ -232,9 +232,7 @@ function MapPage() {
     return (
       <MarkerDetailContainer>
         <DetailInfo>
-          <DetailTitle>
-            {markers[0].title}
-          </DetailTitle>
+          <DetailTitle>{markers[0].title}</DetailTitle>
           <DetailBody>
             <DetailImg src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png"></DetailImg>
             <DetailContent>{markers[0].info}</DetailContent>
@@ -242,8 +240,8 @@ function MapPage() {
         </DetailInfo>
       </MarkerDetailContainer>
     );
-  }
-  markers[0].content = <MarkerDetail/>
+  };
+  markers[0].content = <MarkerDetail />;
 
   const EventMarkerContainer = ({ position, content }) => {
     const [isOpen, setIsOpen] = useState(false);
