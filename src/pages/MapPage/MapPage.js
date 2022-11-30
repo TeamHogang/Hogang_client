@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef} from 'react';
+import React, { useEffect, useState} from 'react';
 import styled from "styled-components";
 import { useNavigate } from 'react-router-dom';
 import { Map, MapMarker } from "react-kakao-maps-sdk";
@@ -339,39 +339,42 @@ function MapPage() {
     navigate("/AddLocation");
   };
 
-  const smokingBtnActive = useRef(false);
-  const nonSmokingBtnActive = useRef(false);
-  const isVisible = useRef('2'); // default는 2
+  const [smokingBtnActive,setSmokingBtnActive] = useState(false); 
+  const [nonSmokingBtnActive,setNonSmokingBtnActive] = useState(false);
+  const [isVisible,setIsVisible] = useState('2'); // default는 2
    
   const filteringSmokingAreaHandler = () => {
     // toggle
-    smokingBtnActive.current = (!smokingBtnActive);
-    console.log(smokingBtnActive);
+    setSmokingBtnActive(!smokingBtnActive);
+    let smokingBtn = (!smokingBtnActive); // 업데이트가 반영이 안된 상태여서 임시변수를 이용
+
     if (nonSmokingBtnActive === true) {
-      nonSmokingBtnActive.current = !nonSmokingBtnActive;
+      setNonSmokingBtnActive(!nonSmokingBtnActive);
     }
-    if (nonSmokingBtnActive === false && smokingBtnActive === false){
-      isVisible.current = '2';
+    if (nonSmokingBtnActive === false && smokingBtn === false){
+      setIsVisible('2');
       console.log("실행");
     }
-    if (nonSmokingBtnActive === false && smokingBtnActive === true) {
+    if (nonSmokingBtnActive === false && smokingBtn === true) {
       // 흡연구역만 보이기 위해 isVisible 값을 0으로 변경
-      isVisible.current = '0';
+      setIsVisible('0');
     }
   };
 
   const filteringNonSmokingAreaHanlder = () => {
     // toggle
-    nonSmokingBtnActive.current = !nonSmokingBtnActive;
+    setNonSmokingBtnActive(!nonSmokingBtnActive);
+    let nonSmokingBtn = !nonSmokingBtnActive; // 업데이트가 반영이 안된 상태여서 임시변수를 이용
+
     if (smokingBtnActive === true) {
-      smokingBtnActive.current = !smokingBtnActive;
+      setSmokingBtnActive(!smokingBtnActive);
     }
-    if (nonSmokingBtnActive === false && smokingBtnActive === false) {
-      isVisible.current = "2";
+    if (nonSmokingBtn === false && smokingBtnActive === false) {
+      setIsVisible('2');
     }
-    if (nonSmokingBtnActive === true && smokingBtnActive === false){
+    if (nonSmokingBtn === true && smokingBtnActive === false) {
       // 흡연구역만 보이기 위해 isVisible 값을 1로 변경
-      isVisible.current = "1";
+      setIsVisible('1');
     }
   };
 
