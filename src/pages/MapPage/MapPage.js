@@ -296,6 +296,7 @@ function MapPage() {
       setInfo(data.info);
     });
 
+    // 마커 디테일창 UI
     return (
       <MarkerDetailContainer>
         <DetailInfo key={key}>
@@ -391,7 +392,7 @@ function MapPage() {
           }}
           level={5} //지도의 확대 레벨
           draggable={true}
-        >
+        > 
           {isVisible === "2" &&
             markers.map((marker) => (
               <EventMarkerContainer
