@@ -1,6 +1,6 @@
 import React, { useEffect, useState} from 'react';
 import styled from "styled-components";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import refreshIcon from "../../img/refreshIcon.png";
 import plusIcon from "../../img/plusIcon.png";
@@ -164,26 +164,26 @@ function MapPage() {
   });
   //const [markers, setMarkers] = useState([]);
   const markers = [
-    //마커 확인용 
+    //마커 확인용
     // type 0 => 흡연구역 / type => 1 금연구역
     {
-      id : 1,
-      type: 0, 
+      id: 1,
+      type: 0,
       name: "흡연구역1",
       lat: 37.557609,
       lng: 127.0003595,
       info: "담배피기 좋은 곳1",
     },
     {
-      id : 2,
-      type: 1, 
+      id: 2,
+      type: 1,
       name: "금연구역1",
       lat: 37.559609,
       lng: 127.0001595,
       info: "담배피기 좋은 곳2",
     },
     {
-      id : 3,
+      id: 3,
       type: 0,
       name: "흡연구역2",
       lat: 37.550609,
@@ -222,6 +222,9 @@ function MapPage() {
   ]);
 
   const navigate = useNavigate();
+  const [smokingBtnActive, setSmokingBtnActive] = useState(false); // 흡연구역 버튼 actvie 상태
+  const [nonSmokingBtnActive, setNonSmokingBtnActive] = useState(false); // 금연구역 버튼 actvie 상태
+  const [isVisible, setIsVisible] = useState("2"); // 0: 흡연구역 1: 금연구역 2: 모든 구역
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -258,10 +261,10 @@ function MapPage() {
   //   //   });
   //   //   GetSmokingMarkerDetail(data, id).then((res) => {
   //   //     setSmokingMarkerDetail(res.data);
-  //   //   }); 
+  //   //   });
   //   //   GetNonSmokingMarkerDetail(data, id).then((res) => {
-  //   //     setNonSmokingMarkerDetail(res.data); 
-  //   //   }); 
+  //   //     setNonSmokingMarkerDetail(res.data);
+  //   //   });
   //   // }, []);
 
   //   return (
@@ -282,8 +285,8 @@ function MapPage() {
   // console.log(markers);
 
   //마커 테스트용
-  const MarkerDetail = ({key,data}) => {
-    const [name,setName] = useState();
+  const MarkerDetail = ({ key, data }) => {
+    const [name, setName] = useState();
     const [info, setInfo] = useState();
 
     console.log(data);
@@ -293,6 +296,7 @@ function MapPage() {
       setInfo(data.info);
     });
 
+    // 마커 디테일창 UI
     return (
       <MarkerDetailContainer>
         <DetailInfo key={key}>
@@ -306,8 +310,9 @@ function MapPage() {
     );
   };
 
-  for(let i =0; i< markers.length; i++){
-    markers[i].content = <MarkerDetail key={markers[i].id} data={markers[i]}/>;
+  // 마커 디테일창 생성
+  for (let i = 0; i < markers.length; i++) {
+    markers[i].content = <MarkerDetail key={markers[i].id} data={markers[i]} />;
   }
   for (let i = 0; i < smokingMarker.length; i++) {
     smokingMarker[i].content = (
@@ -317,11 +322,14 @@ function MapPage() {
 
   for (let i = 0; i < nonSmokingMarker.length; i++) {
     nonSmokingMarker[i].content = (
-      <MarkerDetail key={nonSmokingMarker[i].id + 10000} data={nonSmokingMarker[i]} />
+      <MarkerDetail
+        key={nonSmokingMarker[i].id + 10000}
+        data={nonSmokingMarker[i]}
+      />
     );
   }
-  
 
+  // 마커 클릭 이벤트
   const EventMarkerContainer = ({ position, content }) => {
     const [isOpen, setIsOpen] = useState(false);
     return (
@@ -331,36 +339,30 @@ function MapPage() {
     );
   };
 
-  // const mapCloseHandler = () => {
-  //   navigate("/");
-  // };
-
+  // 흡연구역 버튼 클릭 이벤트
   const addSmokingLocationHandler = () => {
     navigate("/AddLocation");
   };
 
-  const [smokingBtnActive,setSmokingBtnActive] = useState(false); 
-  const [nonSmokingBtnActive,setNonSmokingBtnActive] = useState(false);
-  const [isVisible,setIsVisible] = useState('2'); // default는 2
-   
   const filteringSmokingAreaHandler = () => {
     // toggle
     setSmokingBtnActive(!smokingBtnActive);
-    let smokingBtn = (!smokingBtnActive); // 업데이트가 반영이 안된 상태여서 임시변수를 이용
+    let smokingBtn = !smokingBtnActive; // 업데이트가 반영이 안된 상태여서 임시변수를 이용
 
     if (nonSmokingBtnActive === true) {
       setNonSmokingBtnActive(!nonSmokingBtnActive);
     }
-    if (nonSmokingBtnActive === false && smokingBtn === false){
-      setIsVisible('2');
+    if (nonSmokingBtnActive === false && smokingBtn === false) {
+      setIsVisible("2");
       console.log("실행");
     }
     if (nonSmokingBtnActive === false && smokingBtn === true) {
       // 흡연구역만 보이기 위해 isVisible 값을 0으로 변경
-      setIsVisible('0');
+      setIsVisible("0");
     }
   };
 
+  //금연구역 버튼 클릭 이벤트
   const filteringNonSmokingAreaHanlder = () => {
     // toggle
     setNonSmokingBtnActive(!nonSmokingBtnActive);
@@ -370,11 +372,11 @@ function MapPage() {
       setSmokingBtnActive(!smokingBtnActive);
     }
     if (nonSmokingBtn === false && smokingBtnActive === false) {
-      setIsVisible('2');
+      setIsVisible("2");
     }
     if (nonSmokingBtn === true && smokingBtnActive === false) {
       // 흡연구역만 보이기 위해 isVisible 값을 1로 변경
-      setIsVisible('1');
+      setIsVisible("1");
     }
   };
 
@@ -390,7 +392,7 @@ function MapPage() {
           }}
           level={5} //지도의 확대 레벨
           draggable={true}
-        >
+        > 
           {isVisible === "2" &&
             markers.map((marker) => (
               <EventMarkerContainer
