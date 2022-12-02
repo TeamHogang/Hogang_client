@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import DetailModal from "../../components/DetailModal";
 
@@ -24,7 +24,7 @@ const AreaSelectButton = styled.button`
   border-radius: 5px;
   border-color: #ffffff;
   font-weight: 700;
-  z-index: 999;
+  z-index: 998;
   opacity: 0.8;
 `;
 
@@ -41,29 +41,33 @@ function AddLocation() {
   const [position, setPosition] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const onClickButton = () => {
-    getAddr(position);
-    setIsOpen(true);
+    if (position !== 0) {
+      getAddr(position);
+      setIsOpen(true);
+    } else {
+      alert("지역을 선택해주세요.");
+    }
   };
 
   const [locationDetail, setLocationDetail] = useState("");
 
   function getAddr(position) {
     let geocoder = new kakao.maps.services.Geocoder();
-    let callback = async(result, status) => {
+    let callback = async (result, status) => {
       if (status === kakao.maps.services.Status.OK) {
-          setLocationDetail(result[0].address.address_name);
-          console.log(locationDetail);
+        setLocationDetail(result[0].address.address_name);
+        console.log(locationDetail);
       }
     };
     // 좌표로 법정동 상세 주소 정보를 요청합니다
     geocoder.coord2Address(position.lng, position.lat, callback);
-  };
-  
-  useEffect(()=> {
-    if(position.length > 0){
+  }
+
+  useEffect(() => {
+    if (position.length > 0) {
       getAddr(position.lat, position.lng);
     }
-  })
+  });
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -90,38 +94,36 @@ function AddLocation() {
   }, []);
 
   return (
-    <div>
-      <MapContainer>
-        <Map // 지도를 표시할 컨테이너
-          center={myLocation.center}
-          style={{
-            //지도의 크기
-            width: "100vw",
-            height: "100vh",
+    <MapContainer>
+      <Map // 지도를 표시할 컨테이너
+        center={myLocation.center}
+        style={{
+          //지도의 크기
+          width: "100vw",
+          height: "100vh",
+        }}
+        level={3} //지도의 확대 레벨
+        onClick={(_t, MouseEvent) => {
+          setPosition({
+            lat: MouseEvent.latLng.getLat(),
+            lng: MouseEvent.latLng.getLng(),
+          });
+          console.log(position);
+        }}
+      >
+        {position ? <MapMarker position={position} /> : <></>}
+      </Map>
+      <AreaSelectButton onClick={onClickButton}>선택 완료</AreaSelectButton>
+      {isOpen && (
+        <DetailModal
+          open={isOpen}
+          onClose={() => {
+            setIsOpen(false);
           }}
-          level={3} //지도의 확대 레벨
-          onClick={(_t, MouseEvent) => {
-            setPosition(({
-              lat: MouseEvent.latLng.getLat(),
-              lng: MouseEvent.latLng.getLng(),
-            }));
-            console.log(position);
-          }}
-        >
-          {position && <MapMarker position={position} />}
-        </Map>
-        <AreaSelectButton onClick={onClickButton}>선택 완료</AreaSelectButton>
-        {isOpen && (
-          <DetailModal
-            open={isOpen}
-            onClose={() => {
-              setIsOpen(false);
-            }}
-            locationDetail={locationDetail}
-          />
-        )}
-      </MapContainer>
-    </div>
+          locationDetail={locationDetail}
+        />
+      )}
+    </MapContainer>
   );
 }
 
