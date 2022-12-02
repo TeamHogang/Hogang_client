@@ -1,8 +1,11 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { lazy, Suspense } from "react";
+import Spinner from "./components/Spinner";
 
 const Header = lazy(() => import("./components/Header"));
+const LoginPage = lazy(() => import("./pages/LoginPage/LoginPage"));
+const RegisterPage = lazy(() => import("./pages/RegisterPage/RegisterPage"));
 const Home = lazy(() => import("./pages/Home"));
 const Board = lazy(() => import("./pages/BoardPage/Board"));
 const Feed = lazy(() => import("./pages/BoardPage/Feed"));
@@ -15,14 +18,16 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Suspense fallback={<div>Loading..</div>}>
+        <Suspense fallback={<Spinner />}>
           <Header />
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
             <Route path="/map" element={<Map />} />
             <Route path="/AddLocation" element={<AddLocation />} />
             <Route path="/board" element={<Board />} />
-            <Route path="/new" element={<WriteFeed />} />
+            <Route path="/write" element={<WriteFeed />} />
             <Route path="/feed/:id" element={<Feed />} />
             <Route path="/admin" element={<AdminPage />} />
           </Routes>
