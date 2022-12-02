@@ -15,7 +15,7 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Suspense>
+        <Suspense fallback={<div>Loading..</div>}>
           <Header />
           <Routes>
             <Route path="/" element={<Home />} />
