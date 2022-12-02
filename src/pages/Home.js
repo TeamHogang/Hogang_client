@@ -58,7 +58,7 @@ const MarkerContainer = styled(motion.div)`
   width: 300px;
   justify-content: space-evenly;
   align-items: center;
-  color: #6667ab;
+  color: #9bb7d6;
 `;
 
 const BoardContainer = styled.div`

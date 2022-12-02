@@ -82,7 +82,7 @@ const ArticleDate = styled.div`
 `;
 
 const WriteButton = styled.button`
-  background-color: #a6a6a6;
+  background-color: #9bb7d6;
   color: #ffffff;
   width: 130px;
   height: 40px;
