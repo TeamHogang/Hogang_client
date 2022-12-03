@@ -7,6 +7,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { Auth, GetBoardThumbnail } from "../api/userApi";
 // import axios from "axios";
 
 const Container = styled.div`
@@ -122,26 +123,26 @@ const ArticleDate = styled.div`
 
 function Home() {
   const navigate = useNavigate();
-  // const [articles, setArticles] = useState([]);
+  const [articles, setArticles] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
-  const articles = [
-    {
-      title: "테스트1",
-      date: "2022-11-18",
-    },
-    {
-      title: "테스트2",
-      date: "2022-11-18",
-    },
-    {
-      title: "테스트3",
-      date: "2022-11-18",
-    },
-    {
-      title: "테스트4",
-      date: "2022-11-18",
-    },
-  ];
+  // const articles = [
+  //   {
+  //     title: "테스트1",
+  //     date: "2022-11-18",
+  //   },
+  //   {
+  //     title: "테스트2",
+  //     date: "2022-11-18",
+  //   },
+  //   {
+  //     title: "테스트3",
+  //     date: "2022-11-18",
+  //   },
+  //   {
+  //     title: "테스트4",
+  //     date: "2022-11-18",
+  //   },
+  // ];
   const boardHandler = () => {
     navigate("/board");
   };
@@ -156,7 +157,21 @@ function Home() {
   useEffect(() => {
     // Home 페이지 들어오자마자 Admin인지 아닌지 axios를 통해 확인.
     //  if(axios~~) 해서 isAdmin true -> setIsAdmin(true);
-    setIsAdmin(true);
+    let data = {
+      "X-AUTH-TOKEN": window.localStorage.getItem("X-AUTH-TOKEN"),
+    };
+    Auth(data).then((res) => {
+      setIsAdmin(res.isAdmin);
+      if (!res.isAuth) {
+        alert("로그인 후 이용해주세요.");
+        navigate("/login");
+      }
+    });
+
+    GetBoardThumbnail().then((res) => {
+      console.log(res);
+      setArticles(res.data.board);
+    });
   }, []);
 
   return (
@@ -204,7 +219,7 @@ function Home() {
           {articles.map((article, index) => (
             <Article key={index}>
               <Articletitle>{article.title}</Articletitle>
-              <ArticleDate>{article.date}</ArticleDate>
+              <ArticleDate>{article.createdAt.substring(0, 10)}</ArticleDate>
             </Article>
           ))}
         </BoardBottomContainer>

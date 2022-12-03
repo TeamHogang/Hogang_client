@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useFormik } from "formik";
 import { PrimaryColor } from "../../utils/style";
+import { Login } from "../../api/userApi";
 
 const Container = styled.div`
   display: flex;
@@ -91,23 +92,22 @@ function LoginPage() {
 
   const formik = useFormik({
     initialValues: {
-      id: "",
+      email: "",
       password: "",
     },
     onSubmit: (values, { setSubmitting }) => {
       setTimeout(() => {
         let data = {
-          id: values.id,
+          email: values.email,
           password: values.password,
         };
-
-        // Login(data).then((res) => {
-        //   console.log(res);
-        //   if (res.code === 200) {
-        //     window.localStorage.setItem("X-AUTH-TOKEN", res.data);
-        //     navigate("/");
-        //   }
-        // });
+        Login(data).then((res) => {
+          console.log(res);
+          if (res.data.loginSuccess) {
+            window.localStorage.setItem("X-AUTH-TOKEN", res.data.userId);
+            navigate("/");
+          }
+        });
         setSubmitting(false);
       }, 500);
     },
@@ -125,12 +125,12 @@ function LoginPage() {
             아이디
             <Input
               required
-              id="id"
+              id="email"
               type="text"
-              name="id"
+              name="email"
               placeholder="아이디를 입력해주세요."
               onChange={formik.handleChange}
-              value={formik.values.id || ""}
+              value={formik.values.email || ""}
             />
           </InputContainer>
           <InputContainer>
