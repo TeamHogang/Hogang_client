@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Circle, Map, MapMarker } from "react-kakao-maps-sdk";
 import refreshIcon from "../../assets/img/refreshIcon.png";
 import plusIcon from "../../assets/img/plusIcon.png";
+import { GetMarkerDetail } from "../../api/mapApi";
 
 const MapContainer = styled.div`
   display: flex;
@@ -252,41 +253,14 @@ function MapPage() {
     }
   }, []);
 
-  // const MarkerDetail = ({id}) => {
-  //   const [title, setTitle] = useState();
-  //   const [content, setContent] = useState();
-  //   const [imgUrl, setImgUrl] = useState();
+  //서버에서 바커정보 받아오기
+  // useEffect(() => {
+  //   GetMarkerDetail(data, id).then((res) => {
+  //     setMarkers(res.data);
+  //   });
+  // }, []);
 
-  //   // useEffect(() => {
-  //   //   GetMarkerDetail(data, id).then((res) => {
-  //   //     setMarkers(res.data);
-  //   //   });
-  //   //   GetSmokingMarkerDetail(data, id).then((res) => {
-  //   //     setSmokingMarkerDetail(res.data);
-  //   //   });
-  //   //   GetNonSmokingMarkerDetail(data, id).then((res) => {
-  //   //     setNonSmokingMarkerDetail(res.data);
-  //   //   });
-  //   // }, []);
-
-  //   return (
-  //     <MarkerDetailContainer>
-  //       <DetailTitle>{title}</DetailTitle>
-  //       <DetailClose></DetailClose>
-  //       <DetailBody>
-  //         <DetailImg src={imgUrl}></DetailImg>
-  //         <DetailInfo>{content}</DetailInfo>
-  //       </DetailBody>
-  //     </MarkerDetailContainer>
-  //     );
-  // };
-
-  // for (let i = 0; i < markers.length; i++){
-  //   markers[i].content = <MarkerDetail id={markers[i].id} />;
-  // }
-  // console.log(markers);
-
-  //마커 테스트용
+  //마커 상세 정보창
   const MarkerDetail = ({ key, data }) => {
     const [name, setName] = useState();
     const [info, setInfo] = useState();
@@ -313,21 +287,9 @@ function MapPage() {
   };
 
   // 마커 디테일창 생성
-  for (let i = 0; i < markers.length; i++) {
-    markers[i].content = <MarkerDetail key={markers[i].id} data={markers[i]} />;
-  }
   for (let i = 0; i < smokingMarker.length; i++) {
     smokingMarker[i].content = (
       <MarkerDetail key={smokingMarker[i].id + 10000} data={smokingMarker[i]} />
-    );
-  }
-
-  for (let i = 0; i < nonSmokingMarker.length; i++) {
-    nonSmokingMarker[i].content = (
-      <MarkerDetail
-        key={nonSmokingMarker[i].id + 10000}
-        data={nonSmokingMarker[i]}
-      />
     );
   }
 
@@ -341,7 +303,14 @@ function MapPage() {
     );
   };
 
-  const filterSmokingArea= () => {
+  // 흡연구역 버튼 클릭 이벤트
+  const addSmokingLocationHandler = () => {
+    navigate("/AddLocation");
+  };
+
+  const filteringSmokingAreaHandler = () => {
+    // toggle
+    setSmokingBtnActive(!smokingBtnActive);
     let smokingBtn = !smokingBtnActive; // 업데이트가 반영이 안된 상태여서 임시변수를 이용.
     let nonSmokingBtn = nonSmokingBtnActive;
 
@@ -358,17 +327,6 @@ function MapPage() {
       // 흡연구역만 보이기 위해 isVisible 값을 0으로 변경
       setIsVisible("1");
     }
-  }
-
-  // 흡연구역 버튼 클릭 이벤트
-  const addSmokingLocationHandler = () => {
-    navigate("/AddLocation");
-  };
-
-  const filteringSmokingAreaHandler = () => {
-    // toggle
-    setSmokingBtnActive(!smokingBtnActive);
-    filterSmokingArea();
   };
 
   //금연구역 버튼 클릭 이벤트

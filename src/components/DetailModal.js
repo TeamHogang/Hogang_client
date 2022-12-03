@@ -4,6 +4,7 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 import AddImage from "./AddImage";
+import { PostMarkerDetail } from "../api/mapApi";
 
 const ModalContainer = styled.div`
   position: fixed;
@@ -140,6 +141,15 @@ function DetailModal({ onClose, locationDetail }) {
     onClose?.();
   };
 
+  const submitHandler = () => {
+    let data = {
+      locationDetail: locationDetail,
+      imageSrc: imageSrc,
+      content: content
+    };
+    PostMarkerDetail(data);
+  }
+
   const [content, setContent] = useState("");
   const handleChange = (e) => {
     setContent(e.target.content);
@@ -175,7 +185,7 @@ function DetailModal({ onClose, locationDetail }) {
             </TextareaContainer>
           </FormInfo>
           <ButtonContainer>
-            <SubmitButton>제출하기</SubmitButton>
+            <SubmitButton onClick={submitHandler}>제출하기</SubmitButton>
             <CancelButton onClick={handleClose}>취소</CancelButton>
           </ButtonContainer>
         </form>
