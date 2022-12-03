@@ -34,7 +34,3 @@ export const Auth = async (data) => {
   }
 };
 
-export const GetBoardThumbnail = async () => {
-  const response = await api.get(`${process.env.REACT_APP_SERVER_URL}/board`);
-  return response;
-};
