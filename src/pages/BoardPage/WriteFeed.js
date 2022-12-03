@@ -3,7 +3,8 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLessThan } from "@fortawesome/free-solid-svg-icons";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { EditArticle, WriteArticle } from "../../api/articleApi";
 
 const Container = styled.div`
   display: flex;
@@ -73,8 +74,10 @@ function WriteFeed() {
   const navigate = useNavigate();
   const location = useLocation();
   const isEdit = location.state.isEdit;
+  const id = location.state.id;
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+
   const titleChange = (e) => {
     setTitle(e.target.value);
   };
@@ -85,12 +88,33 @@ function WriteFeed() {
 
   const registerHandler = () => {
     //axios 추가
-    navigate("/board");
+    let data = {
+      title,
+      contents: content,
+    };
+    WriteArticle(data).then((res) => {
+      if (res.status === 200) {
+        navigate("/board");
+      } else {
+        alert("다시 시도해주세요.");
+      }
+    });
   };
 
   const editHanlder = () => {
     //axios 추가
-    navigate("/feed/1");
+    let data = {
+      title,
+      contents: content,
+    };
+    EditArticle(data, id).then((res) => {
+      if (res.status == 200) {
+        alert("수정이 완료되었습니다.");
+        navigate(`/feed/${id}`);
+      } else {
+        alert("다시 시도해주세요.");
+      }
+    });
   };
 
   const registerBackHandler = () => {
@@ -98,7 +122,7 @@ function WriteFeed() {
   };
 
   const editBackHandler = () => {
-    navigate("/feed/1");
+    navigate(`/feed/${id}`);
   };
 
   useEffect(() => {

@@ -7,7 +7,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Auth, GetBoardThumbnail } from "../api/userApi";
+import { Auth } from "../api/userApi";
+import { GetBoardThumbnail } from "../api/articleApi";
+import FeedThumbnail from "../components/FeedThumbnail";
 // import axios from "axios";
 
 const Container = styled.div`
@@ -125,6 +127,7 @@ function Home() {
   const navigate = useNavigate();
   const [articles, setArticles] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [nickname, setNickname] = useState();
   // const articles = [
   //   {
   //     title: "테스트1",
@@ -162,6 +165,8 @@ function Home() {
     };
     Auth(data).then((res) => {
       setIsAdmin(res.isAdmin);
+      setNickname(res.nickname);
+      console.log(res);
       if (!res.isAuth) {
         alert("로그인 후 이용해주세요.");
         navigate("/login");
@@ -182,8 +187,7 @@ function Home() {
           initial={{ opacity: 0 }}
           transition={{ delay: 1 }}
         >
-          안녕하세요 호강 님.
-          {/* 닉네임으로 호강 자리 변경 */}
+          안녕하세요 {nickname} 님{/* 닉네임으로 호강 자리 변경 */}
         </Profile>
         {isAdmin ? (
           <AdminButton onClick={adminHandler}>관리자 페이지</AdminButton>
@@ -216,12 +220,19 @@ function Home() {
           </MoreDetail>
         </BoardTopContainer>
         <BoardBottomContainer>
-          {articles.map((article, index) => (
-            <Article key={index}>
-              <Articletitle>{article.title}</Articletitle>
-              <ArticleDate>{article.createdAt.substring(0, 10)}</ArticleDate>
-            </Article>
-          ))}
+          {articles
+            .map((article, index) => {
+              return (
+                <FeedThumbnail
+                  id={article._id}
+                  title={article.title}
+                  content={article.content}
+                  date={article.createdAt.substring(0, 10)}
+                  key={index}
+                ></FeedThumbnail>
+              );
+            })
+            .slice(0, 5)}
         </BoardBottomContainer>
       </BoardContainer>
     </Container>

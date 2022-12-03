@@ -1,11 +1,13 @@
 /* eslint-disable */
 import React, { useCallback, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
 import styled from "styled-components";
 // import axios from "axios";
 import Loader from "../../components/Loader";
 import SearchBar from "../../components/SearchBar";
+import { GetBoardThumbnail } from "../../api/articleApi";
+import FeedThumbnail from "../../components/FeedThumbnail";
 
 const Container = styled.div`
   display: flex;
@@ -50,37 +52,6 @@ const ArticleContainer = styled.div`
   margin-top: 20px;
 `;
 
-const Article = styled.div`
-  width: 300px;
-  font-weight: 600;
-  display: flex;
-  justify-content: flex-start;
-  flex-direction: column;
-  padding: 10px 0;
-`;
-
-const ArticleNickname = styled.div`
-  color: #a9a9a9;
-  display: flex;
-  justify-content: flex-start;
-  font-size: small;
-  margin-bottom: 5px;
-`;
-
-const Articletitle = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  font-size: medium;
-  margin-bottom: 5px;
-`;
-
-const ArticleDate = styled.div`
-  color: #e6e8e7;
-  display: flex;
-  justify-content: flex-start;
-  font-size: x-small;
-`;
-
 const WriteButton = styled.button`
   background-color: #9bb7d6;
   color: #ffffff;
@@ -99,12 +70,15 @@ const WriteButton = styled.button`
   transform: translate(-50%, 300%);
 `;
 
-function Board() {
+function Board({ id }) {
   const navigate = useNavigate();
+
+  // const { id } = useParams();
 
   const [page, setPage] = useState(1);
   const [load, setLoad] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
+  const [articles, setArticles] = useState([]);
 
   const [ref, inView] = useInView();
 
@@ -113,6 +87,11 @@ function Board() {
     // await axios.get().then((res) => {
     //   setArticles((prevState) => [...prevState, res]);
     // });
+    GetBoardThumbnail().then((res) => {
+      console.log(res);
+      // setArticles((prevState) => [...prevState, res.data.board]);
+      setArticles(res.data.board);
+    });
     setLoad(false);
   }, [page]);
 
@@ -135,52 +114,8 @@ function Board() {
     },
   ];
 
-  const articles = [
-    {
-      nickname: "zz",
-      title: "테스트1",
-      date: "2022-11-18",
-    },
-    {
-      nickname: "zz",
-      title: "테스트2",
-      date: "2022-11-18",
-    },
-    {
-      nickname: "zz",
-      title: "테스트3",
-      date: "2022-11-18",
-    },
-    {
-      nickname: "zz",
-      title: "테스트4",
-      date: "2022-11-18",
-    },
-    {
-      nickname: "zz",
-      title: "테스트1",
-      date: "2022-11-18",
-    },
-    {
-      nickname: "zz",
-      title: "테스트2",
-      date: "2022-11-18",
-    },
-    {
-      nickname: "zz",
-      title: "테스트3",
-      date: "2022-11-18",
-    },
-    {
-      nickname: "zz",
-      title: "테스트4",
-      date: "2022-11-18",
-    },
-  ];
-
   const writeHandler = () => {
     navigate("/write", { state: { isEdit: false } });
-    // return(<WriteFeed isEdit={false} />)
   };
 
   return (
@@ -190,34 +125,27 @@ function Board() {
       </Search>
       <NoticeContainer>
         <Notice>공지사항</Notice>
-        {notices.map((notice, index) => (
+        {/* {notices.map((notice, index) => (
           <Article key={index}>
             <NoticeWrite>공지글</NoticeWrite>
             <Articletitle>{notice.title}</Articletitle>
             <ArticleDate>{notice.date}</ArticleDate>
           </Article>
-        ))}
+        ))} */}
       </NoticeContainer>
       <ArticleContainer>
-        {articles.map((article, index) => (
-          <Article key={index}>
-            {articles.length - 1 === index ? (
-              <div ref={ref}>
-                {/* 마지막 요소라면 ref를 추가하여 inView를 true로 변경시킴. */}
-                <ArticleNickname>{article.nickname}</ArticleNickname>
-                <Articletitle>{article.title}</Articletitle>
-                <ArticleDate>{article.date}</ArticleDate>
-                {load && <Loader />}
-              </div>
-            ) : (
-              <div>
-                <ArticleNickname>{article.nickname}</ArticleNickname>
-                <Articletitle>{article.title}</Articletitle>
-                <ArticleDate>{article.date}</ArticleDate>
-              </div>
-            )}
-          </Article>
-        ))}
+        {articles &&
+          articles.map((article, index) => {
+            return (
+              <FeedThumbnail
+                id={article._id}
+                title={article.title}
+                content={article.content}
+                date={article.createdAt.substring(0, 10)}
+                key={index}
+              ></FeedThumbnail>
+            );
+          })}
       </ArticleContainer>
       <Loader />
       <WriteButton onClick={writeHandler}>글쓰기</WriteButton>
