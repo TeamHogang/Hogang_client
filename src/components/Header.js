@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-// import { useNavigate } from "react-router-dom";
+import appname from "../assets/img/appname.png";
+import { useNavigate } from "react-router-dom";
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -15,13 +16,23 @@ const HeaderContainer = styled.div`
   z-index: 999;
   width: 100%;
   margin: 0px;
-  padding: 20px 10px;
+  padding: 10px 10px;
+`;
+
+const Logo = styled.img`
+  width: 100px;
+  height: 30px;
 `;
 
 function Header() {
+  const navigate = useNavigate();
+
+  const logoHandler = () => {
+    navigate("/");
+  };
   return (
     <HeaderContainer>
-      <div>로고 또는 앱 이름</div>
+      <Logo src={appname} onClick={logoHandler} />
     </HeaderContainer>
   );
 }

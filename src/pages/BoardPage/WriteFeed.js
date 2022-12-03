@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+/* eslint-disable */
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLessThan } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   display: flex;
@@ -26,6 +27,12 @@ const BackButton = styled.div`
   margin-left: 10px;
 `;
 
+const EditButton = styled.div`
+  margin-right: 10px;
+  font-size: small;
+  font-weight: 700;
+`;
+
 const RegisterButton = styled.div`
   margin-right: 10px;
   font-size: small;
@@ -33,7 +40,7 @@ const RegisterButton = styled.div`
 `;
 
 const TitleContainer = styled.div`
-  width: 100vw;
+  width: 300px;
   margin-top: 65px;
   display: flex;
   justify-content: center;
@@ -48,7 +55,7 @@ const Title = styled.input`
 `;
 
 const TextareaContainer = styled.div`
-  width: 100vw;
+  width: 300px;
   margin-top: 20px;
   display: flex;
   justify-content: center;
@@ -64,6 +71,8 @@ const TextArea = styled.textarea`
 
 function WriteFeed() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const isEdit = location.state.isEdit;
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const titleChange = (e) => {
@@ -79,13 +88,41 @@ function WriteFeed() {
     navigate("/board");
   };
 
+  const editHanlder = () => {
+    //axios 추가
+    navigate("/feed/1");
+  };
+
+  const registerBackHandler = () => {
+    navigate("/board");
+  };
+
+  const editBackHandler = () => {
+    navigate("/feed/1");
+  };
+
+  useEffect(() => {
+    console.log(isEdit);
+  }, []);
+
   return (
     <Container>
       <SubHeaderContainer>
-        <BackButton>
-          <FontAwesomeIcon icon={faLessThan} size="1x" />
-        </BackButton>
-        <RegisterButton onClick={registerHandler}>등록하기</RegisterButton>
+        {isEdit ? (
+          <BackButton onClick={editBackHandler}>
+            <FontAwesomeIcon icon={faLessThan} size="1x" />
+          </BackButton>
+        ) : (
+          <BackButton onClick={registerBackHandler}>
+            <FontAwesomeIcon icon={faLessThan} size="1x" />
+          </BackButton>
+        )}
+
+        {isEdit ? (
+          <EditButton onClick={editHanlder}>수정하기</EditButton>
+        ) : (
+          <RegisterButton onClick={registerHandler}>등록하기</RegisterButton>
+        )}
       </SubHeaderContainer>
       <TitleContainer>
         <Title

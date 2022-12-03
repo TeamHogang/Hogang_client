@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLessThan } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   display: flex;
@@ -142,6 +143,13 @@ const CommentDate = styled.div`
 `;
 
 function Feed() {
+  const navigate = useNavigate();
+  const backHandler = () => {
+    navigate("/board");
+  };
+  const editHandler = () => {
+    navigate("/write", { state: { isEdit: true } });
+  };
   const comments = [
     {
       nickname: "zz",
@@ -186,7 +194,7 @@ function Feed() {
   ];
   return (
     <Container>
-      <BackButton>
+      <BackButton onClick={backHandler}>
         <FontAwesomeIcon icon={faLessThan} size="1x" />
       </BackButton>
       <FeedContainer>
@@ -197,7 +205,7 @@ function Feed() {
           </NickNameContainer>
           <DeleteEditContainer>
             <Delete>삭제</Delete>
-            <Edit>수정</Edit>
+            <Edit onClick={editHandler}>수정</Edit>
           </DeleteEditContainer>
         </NickEditContainer>
         <Detail>
