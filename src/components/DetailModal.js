@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
+import AddImage from "./AddImage";
 
 const ModalContainer = styled.div`
   position: fixed;
@@ -111,67 +112,15 @@ const Detail = styled.textarea`
 const ContentLable = styled.label`
   font-family: LINESeedKR-Bd;
 `;
-
+const ImgTitle = styled.div`
+  font-family: LINESeedKR-Bd;
+  display: flex;
+`;
 const SmokingInfo = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
   margin-bottom: 5px;
-`;
-
-const UploadImage = styled.div`
-  display: flex;
-  margin-top: 15px;
-`;
-
-const CustomImg = styled.div``;
-const ImgWrap = styled.div`
-  /* margin: 30px; */
-  width: 70vw;
-`;
-
-const UploadInput = styled.form``;
-
-const ImgTitle = styled.div`
-  font-family: LINESeedKR-Bd;
-  display: flex;
-`;
-const InputImg = styled.input`
-  position: absolute;
-  width: 0;
-  height: 0;
-  padding: 0;
-  overflow: hidden;
-  border: 0;
-`;
-const ImgLabel = styled.label`
-  position: absolute;
-  top: 102px;
-  left: 140px;
-  padding: 5px 20px;
-  border: 1px solid #a9a9a9;
-  border-radius: 10px;
-  color: black;
-  cursor: pointer;
-  width: 100px;
-  height: 20px;
-`;
-const InputImg2 = styled.input`
-  display: none;
-  height: 30px;
-  padding: 0 10px;
-  vertical-align: middle;
-  border: 1px solid #dddddd;
-  width: 50%;
-  color: #999999;
-`;
-
-const PreviewImg = styled.img`
-  width: 70vw;
-  height: 150px;
-  resize: both;
-  background-size: 200px 150px;
-  aspect-ratio: 4 / 3;
 `;
 
 const LocationTitle = styled.div`
@@ -196,44 +145,7 @@ function DetailModal({ onClose, locationDetail }) {
     setContent(e.target.content);
   };
 
-  const [imageSrc, setImageSrc] = useState("");
-
-  const encodeFileToBase64 = (fileBlob) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(fileBlob);
-    return new Promise((resolve) => {
-      reader.onload = () => {
-        setImageSrc(reader.result);
-        resolve();
-      };
-    });
-  };
-
   const offHandler = () => {};
-
-  const AddImage = () => {
-    return (
-      <UploadImage>
-        <UploadInput>
-          <InputImg
-            type="file"
-            id="image"
-            accept="img/*"
-            onChange={(e) => {
-              encodeFileToBase64(e.target.files[0]);
-            }}
-          />
-          <InputImg2 defaultvalue="첨부파일" placeholder="첨부파일" disabled />
-          <ImgLabel htmlFor="image">파일찾기</ImgLabel>
-          <CustomImg>
-            <ImgWrap>
-              <PreviewImg src={imageSrc} />
-            </ImgWrap>
-          </CustomImg>
-        </UploadInput>
-      </UploadImage>
-    );
-  };
 
   return (
     <ModalContainer>
