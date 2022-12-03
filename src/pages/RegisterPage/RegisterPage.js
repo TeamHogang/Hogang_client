@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { PrimaryColor } from "../../utils/style";
+import { Register } from "../../api/userApi";
 
 const Container = styled.div`
   display: flex;
@@ -78,7 +79,7 @@ function RegisterPage() {
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
-      id: "",
+      email: "",
       nickname: "",
       password: "",
       confirmPassword: "",
@@ -86,17 +87,18 @@ function RegisterPage() {
     onSubmit: (values, { setSubmitting }) => {
       setTimeout(() => {
         let data = {
-          id: values.id,
+          email: values.email,
           password: values.password,
           nickname: values.nickname,
         };
         console.log(data);
-        // Register(data).then((res) => {
-        //   console.log(res);
-        //   if ((res.code = 200)) {
-        //     navigate("/login");
-        //   }
-        // });
+        Register(data).then((res) => {
+          console.log(res);
+          if ((res.code = 200)) {
+            alert("회원가입이 완료되었습니다.");
+            navigate("/login");
+          }
+        });
         setSubmitting(false);
       }, 500);
     },
@@ -113,9 +115,9 @@ function RegisterPage() {
             <Input
               required
               type="text"
-              id="id"
+              id="email"
               placeholder="아이디를 입력해주세요"
-              value={formik.values.id || ""}
+              value={formik.values.email || ""}
               onChange={formik.handleChange}
             />
           </InputContainer>
