@@ -1,131 +1,126 @@
-import React, { useEffect, useState } from "react";
+/* eslint-disable */
+import React, { useState } from "react";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
+import AddImage from "./AddImage";
 
-const Overlay = styled.div`
+const ModalContainer = styled.div`
   position: fixed;
-  width: 100%;
-  height: 100%;
   top: 0;
-  bottom: 0;
   left: 0;
+  bottom: 0;
   right: 0;
-  background: rgba(0, 0, 0, 0.2);
-  z-index: 9999;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 999;
 `;
 
-const ModalWrap = styled.div`
-  width: 600px;
-  height: fit-content;
-  border-radius: 15px;
-  background-color: #fff;
+const ModalWrapper = styled.div`
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 10%;
+  left: 10%;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  width: 80vw;
+  height: 500px;
 `;
 
-const Contents = styled.div`
-  text-align: center;
-  margin: 50px 30px;
+const ModalHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  border-bottom: 1px solid #e6e8e7;
+`;
+
+const BackButton = styled.div`
+  margin-right: 10px;
+`;
+
+const FormInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const LocationContainer = styled.div`
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  font-weight: 600;
+  border-bottom: 1px solid #e6e8e7;
+  font-family: LINESeedKR-Bd;
+`;
+
+const LocationImageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  font-weight: 600;
+  border-bottom: 1px solid #e6e8e7;
+  margin: 0 20px;
+`;
+
+const TextareaContainer = styled.div`
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* align-items: center; */
+  font-weight: 600;
+  border-bottom: 1px solid #e6e8e7;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  width: 80vw;
+  justify-content: space-evenly; ;
 `;
 
 const CancelButton = styled.button`
-  position: absolute;
-  bottom: 10px;
-  right: 150px;
-  background-color: #ffffff;
-  color: #000000;
-  width: 130px;
-  height: 40px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: 800ms ease all;
-  outline: none;
-  border-radius: 5px;
-  border-color: #ffffff;
+  border: 1px solid #a9a9a9;
+  background-color: white;
+  color: #800020;
   font-weight: 700;
-  font-style: bold;
-  z-index: 999;
-  opacity: 0.8;
-  &:hover {
-    background-color: #898989;
-  }
+  font-size: medium;
+  width: 100px;
+  border-radius: 10px;
 `;
 
 const SubmitButton = styled.button`
-  position: absolute;
-  bottom: 10px;
-  right: 350px;
-  background-color: #ffffff;
-  color: #000000;
-  width: 130px;
-  height: 40px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: 800ms ease all;
-  outline: none;
-  border-radius: 5px;
-  border-color: #ffffff;
+  border: 1px solid #a9a9a9;
+  background-color: white;
+  color: #00008b;
+  width: 100px;
+  height: 30px;
+  border-radius: 10px;
   font-weight: 700;
-  z-index: 999;
-  opacity: 0.8;
+  font-size: medium;
 `;
 
 const Detail = styled.textarea`
-  width: 80%;
-  bottom: 30px;
-  height: 6.25em;
+  margin-top: 20px;
+  margin-bottom: 20px;
   resize: none;
+  display: flex;
+  align-items: center;
   font-family: LINESeedKR-Bd;
 `;
 const ContentLable = styled.label`
   font-family: LINESeedKR-Bd;
 `;
-
-const UploadImage = styled.div`
-  margin-left: 50px;
-  right: 200px;
-  width: 435px;
-  border: 1px solid black;
-`
-
-const CustomImg = styled.div`
-`
-const ImgWrap = styled.div`
-  margin: 30px;
-`
-const UploadInput = styled.form`
-`
-
 const ImgTitle = styled.div`
   font-family: LINESeedKR-Bd;
+  display: flex;
 `;
-const InputImg = styled.input`
-  position: absolute;
-  width: 0;
-  height: 0;
-  padding: 0;
-  overflow: hidden;
-  border: 0;
-`;
-const ImgLabel = styled.label`
-  display: inline-block;
-  padding: 10px 20px;
-  color: #fff;
-  vertical-align: middle;
-  background-color: #999999;
-  cursor: pointer;
-  height: 20px;
-  margin-left: 10px;
-`
-const InputImg2 = styled.input`
-  display: inline-block;
-  height: 40px;
-  padding: 0 10px;
-  vertical-align: middle;
-  border: 1px solid #dddddd;
-  width: 50%;
-  color: #999999;
+const SmokingInfo = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-bottom: 5px;
 `;
 
 const LocationTitle = styled.div`
@@ -133,11 +128,10 @@ const LocationTitle = styled.div`
 `;
 
 const LocationInfo = styled.div`
-  width: 437px;
-  height: 30px;
-  margin-left: 50px;
-  font-family: LINESeedKR-Bd;
-  border: 1px solid #000000;
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 7px;
+  font-size: small;
 `;
 
 function DetailModal({ onClose, locationDetail }) {
@@ -151,64 +145,42 @@ function DetailModal({ onClose, locationDetail }) {
     setContent(e.target.content);
   };
 
-  const [imageSrc, setImageSrc] = useState("");
-
-  const encodeFileToBase64 = (fileBlob) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(fileBlob);
-    return new Promise((resolve) => {
-      reader.onload = () => {
-        setImageSrc(reader.result);
-        resolve();
-      };
-    });
-  };
-  
-  const AddImage = () => {
-    return (
-      <UploadImage>
-        <UploadInput>
-          <InputImg
-            type="file"
-            id="image"
-            accept="img/*"
-            onChange={(e) => {
-              encodeFileToBase64(e.target.files[0]);
-            }}
-          />
-          <InputImg2 defaultvalue="첨부파일" placeholder="첨부파일" />
-          <ImgLabel htmlFor="image">파일찾기</ImgLabel>
-          <CustomImg>
-            <ImgWrap>
-              {imageSrc && <img src={imageSrc} alt="preview-img" />}
-            </ImgWrap>
-          </CustomImg>
-        </UploadInput>
-      </UploadImage>
-    );
-  };
+  const offHandler = () => {};
 
   return (
-    <Overlay>
-      <ModalWrap>
-        <Contents>
-          <LocationTitle>흡연 구역 위치 정보</LocationTitle>
-          <LocationInfo>{locationDetail}</LocationInfo>
-          <ImgTitle>흡연 구역 사진</ImgTitle>
-          <AddImage />
-          <ContentLable>
-            흡연 구역 설명(필수)
-            <Detail
-              defaultValue={content}
-              onChange={handleChange}
-              placeholder="내용을 입력해 주세요."
-            />
-          </ContentLable>
-        </Contents>
-        <SubmitButton>제출하기</SubmitButton>
-        <CancelButton onClick={handleClose}>취소</CancelButton>
-      </ModalWrap>
-    </Overlay>
+    <ModalContainer>
+      <ModalWrapper>
+        <ModalHeader>
+          <BackButton onClick={offHandler}>
+            <FontAwesomeIcon icon={faTimes} />
+          </BackButton>
+        </ModalHeader>
+        <form>
+          <FormInfo>
+            <LocationContainer>
+              <LocationTitle>흡연 구역 위치 정보</LocationTitle>
+              <LocationInfo>{locationDetail}</LocationInfo>
+            </LocationContainer>
+            <LocationImageContainer>
+              <ImgTitle>흡연 구역 사진</ImgTitle>
+              <AddImage />
+            </LocationImageContainer>
+            <TextareaContainer>
+              <SmokingInfo>흡연 구역 설명(필수)</SmokingInfo>
+              <Detail
+                defaultValue={content}
+                onChange={handleChange}
+                placeholder="내용을 입력해 주세요."
+              />
+            </TextareaContainer>
+          </FormInfo>
+          <ButtonContainer>
+            <SubmitButton>제출하기</SubmitButton>
+            <CancelButton onClick={handleClose}>취소</CancelButton>
+          </ButtonContainer>
+        </form>
+      </ModalWrapper>
+    </ModalContainer>
   );
 }
 

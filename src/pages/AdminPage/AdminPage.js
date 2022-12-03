@@ -57,7 +57,7 @@ const DemandTitle = styled.div`
   font-weight: 700;
   font-size: medium;
   margin-left: 10px;
-  color: #6667ab; // 컬러 변경 예정
+  color: #9bb7d6; // 컬러 변경 예정
 `;
 
 const DemandInfo = styled.div`

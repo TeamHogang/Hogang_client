@@ -17,7 +17,7 @@ const Container = styled.div`
 
 const Search = styled.div`
   margin-top: 65px;
-  margin-left: 20px;
+  width: 300px;
 `;
 
 const NoticeContainer = styled.div`
@@ -82,7 +82,7 @@ const ArticleDate = styled.div`
 `;
 
 const WriteButton = styled.button`
-  background-color: #a6a6a6;
+  background-color: #9bb7d6;
   color: #ffffff;
   width: 130px;
   height: 40px;
@@ -104,6 +104,7 @@ function Board() {
 
   const [page, setPage] = useState(1);
   const [load, setLoad] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
 
   const [ref, inView] = useInView();
 
@@ -178,7 +179,8 @@ function Board() {
   ];
 
   const writeHandler = () => {
-    navigate("/new");
+    navigate("/write", { state: { isEdit: false } });
+    // return(<WriteFeed isEdit={false} />)
   };
 
   return (
