@@ -341,6 +341,25 @@ function MapPage() {
     );
   };
 
+  const filterSmokingArea= () => {
+    let smokingBtn = !smokingBtnActive; // 업데이트가 반영이 안된 상태여서 임시변수를 이용.
+    let nonSmokingBtn = nonSmokingBtnActive;
+
+    if (nonSmokingBtnActive === true) {
+      setNonSmokingBtnActive(!nonSmokingBtnActive);
+      nonSmokingBtn = !nonSmokingBtn;
+    }
+
+    if (nonSmokingBtn === false && smokingBtn === false) {
+      // 전체구역을 보이기 위해 isVisible 값을 0으로 변경
+      setIsVisible("2");
+    }
+    if (nonSmokingBtn === false && smokingBtn === true) {
+      // 흡연구역만 보이기 위해 isVisible 값을 0으로 변경
+      setIsVisible("1");
+    }
+  }
+
   // 흡연구역 버튼 클릭 이벤트
   const addSmokingLocationHandler = () => {
     navigate("/AddLocation");
@@ -349,19 +368,7 @@ function MapPage() {
   const filteringSmokingAreaHandler = () => {
     // toggle
     setSmokingBtnActive(!smokingBtnActive);
-    let smokingBtn = !smokingBtnActive; // 업데이트가 반영이 안된 상태여서 임시변수를 이용
-
-    if (nonSmokingBtnActive === true) {
-      setNonSmokingBtnActive(!nonSmokingBtnActive);
-    }
-    if (nonSmokingBtnActive === false && smokingBtn === false) {
-      setIsVisible("2");
-      console.log("실행");
-    }
-    if (nonSmokingBtnActive === false && smokingBtn === true) {
-      // 흡연구역만 보이기 위해 isVisible 값을 0으로 변경
-      setIsVisible("0");
-    }
+    filterSmokingArea();
   };
 
   //금연구역 버튼 클릭 이벤트
@@ -369,16 +376,20 @@ function MapPage() {
     // toggle
     setNonSmokingBtnActive(!nonSmokingBtnActive);
     let nonSmokingBtn = !nonSmokingBtnActive; // 업데이트가 반영이 안된 상태여서 임시변수를 이용
+    let smokingBtn = smokingBtnActive;
 
     if (smokingBtnActive === true) {
       setSmokingBtnActive(!smokingBtnActive);
+      smokingBtn = !smokingBtn;
     }
-    if (nonSmokingBtn === false && smokingBtnActive === false) {
+    
+    if (nonSmokingBtn === false && smokingBtn === false) {
+      // 전체구역을 보이기 위해 isVisible 값을 0으로 변경
       setIsVisible("2");
     }
-    if (nonSmokingBtn === true && smokingBtnActive === false) {
+    if (nonSmokingBtn === true && smokingBtn === false) {
       // 흡연구역만 보이기 위해 isVisible 값을 1로 변경
-      setIsVisible("1");
+      setIsVisible("0");
     }
   };
 
@@ -400,7 +411,7 @@ function MapPage() {
           draggable={true}
         >
           {markers.map((marker) => {
-            if (marker.type == 0) {
+            if ((isVisible === "2" || isVisible === "1") && marker.type == 0) {
               return (
                 <EventMarkerContainer
                   key={marker.id}
@@ -419,7 +430,7 @@ function MapPage() {
                   content={marker.content}
                 />
               );
-            } else if (marker.type == 1) {
+            } if ((isVisible === "2" || isVisible === "0") && marker.type == 1) {
               return (
                 <Circle
                   key={marker.id}
