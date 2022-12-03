@@ -29,6 +29,7 @@ const AreaSelectButton = styled.button`
 `;
 
 function AddLocation() {
+  /*global kakao*/
   const [myLocation, setMyLocation] = useState({
     center: {
       lat: 37.5590083,
@@ -37,13 +38,33 @@ function AddLocation() {
     errMsg: null,
     isLoading: true,
   });
-
-  const [position, setPosition] = useState()
+  const [position, setPosition] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const onClickButton = () => {
-        setIsOpen(true);
+    getAddr(position);
+    setIsOpen(true);
+  };
+
+  const [locationDetail, setLocationDetail] = useState("");
+
+  function getAddr(position) {
+    let geocoder = new kakao.maps.services.Geocoder();
+    let callback = async(result, status) => {
+      if (status === kakao.maps.services.Status.OK) {
+          setLocationDetail(result[0].address.address_name);
+          console.log(locationDetail);
+      }
+    };
+    // 좌표로 법정동 상세 주소 정보를 요청합니다
+    geocoder.coord2Address(position.lng, position.lat, callback);
+  };
+  
+  useEffect(()=> {
+    if(position.length > 0){
+      getAddr(position.lat, position.lng);
     }
-    
+  })
+
   useEffect(() => {
     if (navigator.geolocation) {
       // GeoLocation을 이용하여 접속 위치를 얻어옴
@@ -79,12 +100,13 @@ function AddLocation() {
             height: "100vh",
           }}
           level={3} //지도의 확대 레벨
-          onClick={(_t, MouseEvent) =>
-            setPosition({
+          onClick={(_t, MouseEvent) => {
+            setPosition(({
               lat: MouseEvent.latLng.getLat(),
               lng: MouseEvent.latLng.getLng(),
-            })
-          }
+            }));
+            console.log(position);
+          }}
         >
           {position && <MapMarker position={position} />}
         </Map>
@@ -95,6 +117,7 @@ function AddLocation() {
             onClose={() => {
               setIsOpen(false);
             }}
+            locationDetail={locationDetail}
           />
         )}
       </MapContainer>

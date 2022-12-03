@@ -96,6 +96,10 @@ const ImgWrap = styled.div`
 `
 const UploadInput = styled.form`
 `
+
+const ImgTitle = styled.div`
+  font-family: LINESeedKR-Bd;
+`;
 const InputImg = styled.input`
   position: absolute;
   width: 0;
@@ -124,71 +128,88 @@ const InputImg2 = styled.input`
   color: #999999;
 `;
 
-function DetailModal({ onClose }) {
-    const handleClose = () => {
-        onClose?.();
-    };
+const LocationTitle = styled.div`
+  font-family: LINESeedKR-Bd;
+`;
 
-    const [content, setContent] = useState("");
-    const handleChange = (e) => {
-        setContent(e.target.content);
-    };
+const LocationInfo = styled.div`
+  width: 437px;
+  height: 30px;
+  margin-left: 50px;
+  font-family: LINESeedKR-Bd;
+  border: 1px solid #000000;
+`;
 
-    const [imageSrc, setImageSrc] = useState('');
-    
-    const encodeFileToBase64 = (fileBlob) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(fileBlob);
-        return new Promise((resolve) => {
-            reader.onload = () => {
-                setImageSrc(reader.result);
-                resolve();
-            };
-        });
-    };
+function DetailModal({ onClose, locationDetail }) {
+  /*global kakao*/
+  const handleClose = () => {
+    onClose?.();
+  };
 
-    const AddImage = () => {
-        return (
-          <UploadImage>
-            <UploadInput>
-              <InputImg
-                type="file"
-                id="image"
-                accept="img/*"
-                onChange={(e) => {
-                  encodeFileToBase64(e.target.files[0]);
-                }}
-              />
-              <InputImg2 value="첨부파일" placeholder="첨부파일" />
-              <ImgLabel htmlFor="image">파일찾기</ImgLabel>
-              <CustomImg>
-                <ImgWrap>
-                  {imageSrc && <img src={imageSrc} alt="preview-img" />}
-                </ImgWrap>
-              </CustomImg>
-            </UploadInput>
-          </UploadImage>
-        );
-    }
+  const [content, setContent] = useState("");
+  const handleChange = (e) => {
+    setContent(e.target.content);
+  };
 
+  const [imageSrc, setImageSrc] = useState("");
+
+  const encodeFileToBase64 = (fileBlob) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(fileBlob);
+    return new Promise((resolve) => {
+      reader.onload = () => {
+        setImageSrc(reader.result);
+        resolve();
+      };
+    });
+  };
+  
+  const AddImage = () => {
     return (
-      <Overlay>
-        <ModalWrap>
-          <Contents>
-            <AddImage/>
-            <ContentLable> 흡연 구역 설명(필수)
-              <Detail
-                value={content}
-                onChange={handleChange}
-                placeholder="내용을 입력해 주세요."
-              />
-            </ContentLable>
-          </Contents>
-          <SubmitButton>제출하기</SubmitButton>
-          <CancelButton onClick={handleClose}>취소</CancelButton>
-        </ModalWrap>
-      </Overlay>
+      <UploadImage>
+        <UploadInput>
+          <InputImg
+            type="file"
+            id="image"
+            accept="img/*"
+            onChange={(e) => {
+              encodeFileToBase64(e.target.files[0]);
+            }}
+          />
+          <InputImg2 defaultvalue="첨부파일" placeholder="첨부파일" />
+          <ImgLabel htmlFor="image">파일찾기</ImgLabel>
+          <CustomImg>
+            <ImgWrap>
+              {imageSrc && <img src={imageSrc} alt="preview-img" />}
+            </ImgWrap>
+          </CustomImg>
+        </UploadInput>
+      </UploadImage>
     );
+  };
+
+  return (
+    <Overlay>
+      <ModalWrap>
+        <Contents>
+          <LocationTitle>흡연 구역 위치 정보</LocationTitle>
+          <LocationInfo>{locationDetail}</LocationInfo>
+          <ImgTitle>흡연 구역 사진</ImgTitle>
+          <AddImage />
+          <ContentLable>
+            흡연 구역 설명(필수)
+            <Detail
+              defaultValue={content}
+              onChange={handleChange}
+              placeholder="내용을 입력해 주세요."
+            />
+          </ContentLable>
+        </Contents>
+        <SubmitButton>제출하기</SubmitButton>
+        <CancelButton onClick={handleClose}>취소</CancelButton>
+      </ModalWrap>
+    </Overlay>
+  );
 }
 
 export default DetailModal;
