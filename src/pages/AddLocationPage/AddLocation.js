@@ -121,6 +121,7 @@ function AddLocation() {
             setIsOpen(false);
           }}
           locationDetail={locationDetail}
+          position={position}
         />
       )}
     </MapContainer>

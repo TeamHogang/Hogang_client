@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Circle, Map, MapMarker } from "react-kakao-maps-sdk";
 import refreshIcon from "../../assets/img/refreshIcon.png";
 import plusIcon from "../../assets/img/plusIcon.png";
-import { GetMarkerDetail } from "../../api/mapApi";
+import { GetMarkerList } from "../../api/mapApi";
 
 const MapContainer = styled.div`
   display: flex;
@@ -165,64 +165,7 @@ function MapPage() {
     errMsg: null,
     isLoading: true,
   });
-  //const [markers, setMarkers] = useState([]);
-  const markers = [
-    //마커 확인용
-    // type 0 => 흡연구역 / type => 1 금연구역
-    {
-      id: 1,
-      type: 0,
-      name: "흡연구역1",
-      lat: 37.557609,
-      lng: 127.0003595,
-      info: "담배피기 좋은 곳1",
-    },
-    {
-      id: 2,
-      type: 1,
-      name: "금연구역1",
-      lat: 37.559609,
-      lng: 127.0001595,
-      info: "담배피기 좋은 곳2",
-    },
-    {
-      id: 3,
-      type: 0,
-      name: "흡연구역2",
-      lat: 37.550609,
-      lng: 127.0005595,
-      info: "담배피기 좋은 곳3",
-    },
-  ];
-
-  const [smokingMarker, setSomkingMarker] = useState([
-    {
-      id: 1,
-      type: 0,
-      name: "흡연구역1",
-      lat: 37.557609,
-      lng: 127.0003595,
-      info: "담배피기 좋은 곳1",
-    },
-    {
-      id: 3,
-      type: 0,
-      name: "흡연구역2",
-      lat: 37.550609,
-      lng: 127.0005595,
-      info: "담배피기 좋은 곳3",
-    },
-  ]);
-  const [nonSmokingMarker, setNonSmokingMarker] = useState([
-    {
-      id: 2,
-      type: 1,
-      name: "금연구역1",
-      lat: 37.559609,
-      lng: 127.0001595,
-      info: "담배피기 좋은 곳2",
-    },
-  ]);
+  const [markers, setMarkers] = useState([]);
 
   const navigate = useNavigate();
   const [smokingBtnActive, setSmokingBtnActive] = useState(false); // 흡연구역 버튼 actvie 상태
@@ -253,23 +196,25 @@ function MapPage() {
     }
   }, []);
 
-  //서버에서 바커정보 받아오기
-  // useEffect(() => {
-  //   GetMarkerDetail(data, id).then((res) => {
-  //     setMarkers(res.data);
-  //   });
-  // }, []);
+  //서버에서 마커정보 받아오기
+  useEffect(() => {
+    GetMarkerList().then((res) => {
+      setMarkers(res.data.marker);
+    });
+  }, []);
 
   //마커 상세 정보창
   const MarkerDetail = ({ key, data }) => {
     const [name, setName] = useState();
     const [info, setInfo] = useState();
+    const [img, setImg] = useState();
 
     console.log(data);
 
     useEffect(() => {
-      setName(data.name);
+      setName(data.prhsmknm);
       setInfo(data.info);
+      setImg(data.img);
     });
 
     // 마커 디테일창 UI
@@ -287,10 +232,12 @@ function MapPage() {
   };
 
   // 마커 디테일창 생성
-  for (let i = 0; i < smokingMarker.length; i++) {
-    smokingMarker[i].content = (
-      <MarkerDetail key={smokingMarker[i].id + 10000} data={smokingMarker[i]} />
-    );
+  for (let i = 0; i < markers.length; i++) {
+    if (markers.type === 1) { // 흡연구역일 경우 마커 디테일창 생성
+      markers[i].content = (
+        <MarkerDetail key={markers[i].id} data={markers[i]} />
+      );
+    }
   }
 
   // 마커 클릭 이벤트
@@ -340,7 +287,7 @@ function MapPage() {
       setSmokingBtnActive(!smokingBtnActive);
       smokingBtn = !smokingBtn;
     }
-    
+
     if (nonSmokingBtn === false && smokingBtn === false) {
       // 전체구역을 보이기 위해 isVisible 값을 0으로 변경
       setIsVisible("2");
@@ -351,9 +298,7 @@ function MapPage() {
     }
   };
 
-  const smokeFilter = () => {
-    setFlag(!flag);
-  };
+  console.log(markers);
 
   return (
     <div>
@@ -365,17 +310,35 @@ function MapPage() {
             width: "100vw",
             height: "100vh",
           }}
-          level={5} //지도의 확대 레벨
+          level={4} //지도의 확대 레벨
           draggable={true}
         >
-          {markers.map((marker) => {
-            if ((isVisible === "2" || isVisible === "1") && marker.type == 0) {
+          {markers && markers.map((marker) => {
+            //console.log(markers);
+            if ((isVisible === "2" || isVisible === "0") && marker.type === 0) {
+              return (
+                <Circle
+                  key={marker._id}
+                  center={{
+                    lat: marker.latitude,
+                    lng: marker.longitude,
+                  }}
+                  radius={marker.prhsmkar} // 흡연구역 범위
+                  strokeWeight={3}
+                  strokeOpacity={0.1}
+                  fillColor={"#800020"}
+                  fillOpacity={0.5}
+                />
+              );
+            }
+            if ((isVisible === "2" || isVisible === "1") && marker.type === 1) {
+              // console.log(markers);
               return (
                 <EventMarkerContainer
-                  key={marker.id}
+                  key={marker._id}
                   position={{
-                    lat: `${marker.lat}`,
-                    lng: `${marker.lng}`,
+                    lat: `${marker.latitude}`,
+                    lng: `${marker.longitude}`,
                   }} // 마커를 표시할 위치
                   image={{
                     src: "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png", // 마커이미지의 주소입니다
@@ -388,57 +351,8 @@ function MapPage() {
                   content={marker.content}
                 />
               );
-            } if ((isVisible === "2" || isVisible === "0") && marker.type == 1) {
-              return (
-                <Circle
-                  key={marker.id}
-                  center={{
-                    lat: marker.lat,
-                    lng: marker.lng,
-                  }}
-                  radius={50}
-                  strokeWeight={3}
-                  strokeOpacity={0.1}
-                  fillColor={"#800020"}
-                  fillOpacity={0.5}
-                />
-              );
             }
           })}
-          {/* {isVisible === "0" && //흡연구역만 출력
-            smokingMarker.map((marker) => (
-              <EventMarkerContainer
-                key={marker.id}
-                position={{
-                  lat: `${marker.lat}`,
-                  lng: `${marker.lng}`,
-                }} // 마커를 표시할 위치
-                image={{
-                  src: "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png", // 마커이미지의 주소입니다
-                  size: {
-                    width: 24,
-                    height: 35,
-                  }, // 마커이미지의 크기입니다
-                }}
-                title={marker.name} // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-                content={marker.content}
-              />
-            ))}
-          {isVisible === "1" && //금연구역만 출력
-            nonSmokingMarker.map((marker) => (
-              <Circle
-                key={marker.id}
-                center={{
-                  lat: marker.lat,
-                  lng: marker.lng,
-                }}
-                radius={50}
-                strokeWeight={3}
-                strokeOpacity={0.1}
-                fillColor={"#800020"}
-                fillOpacity={0.5}
-              />
-            ))} */}
         </Map>
         <SmokingAreaButton
           id="SmokingArea"

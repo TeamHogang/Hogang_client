@@ -135,7 +135,7 @@ const LocationInfo = styled.div`
   font-size: small;
 `;
 
-function DetailModal({ onClose, locationDetail }) {
+function DetailModal({ onClose, locationDetail, position }) {
   /*global kakao*/
   const handleClose = () => {
     onClose?.();
@@ -145,10 +145,14 @@ function DetailModal({ onClose, locationDetail }) {
     let data = {
       locationDetail: locationDetail,
       imageSrc: imageSrc,
-      content: content
+      content: content,
+      latitude: position.lat,
+      longitude: position.lng,
+      type: 1
     };
+    console.log(data);
     PostMarkerDetail(data);
-  }
+  };
 
   const [content, setContent] = useState("");
   const handleChange = (e) => {
