@@ -137,26 +137,40 @@ const LocationInfo = styled.div`
 
 function DetailModal({ onClose, locationDetail, position }) {
   /*global kakao*/
+  const [imageSrc,setImageSrc] = useState(null);
+
+  console.log("디테일모달");
+  console.log(position);
+  console.log(locationDetail);
+
+  const addImgSrc = (imgSrc) => {
+    setImageSrc(imgSrc);
+    console.log(imgSrc);
+  }
+
   const handleClose = () => {
     onClose?.();
   };
 
   const submitHandler = () => {
-    let data = {
-      locationDetail: locationDetail,
-      imageSrc: imageSrc,
-      content: content,
-      latitude: position.lat,
-      longitude: position.lng,
-      type: 1
-    };
-    console.log(data);
-    PostMarkerDetail(data);
+   
+    const formData = new FormData();
+
+    formData.append("prhsmknm", locationDetail);
+    formData.append("content", content);
+    formData.append("latitude", position.lat);
+    formData.append("longitude", position.lng);
+    formData.append("type", 1);
+    formData.append("img", imageSrc);
+    
+    console.log(formData);
+    PostMarkerDetail(formData);
   };
 
   const [content, setContent] = useState("");
   const handleChange = (e) => {
-    setContent(e.target.content);
+    setContent(e.target.value);
+    console.log(content);
   };
 
   const offHandler = () => {};
@@ -177,12 +191,12 @@ function DetailModal({ onClose, locationDetail, position }) {
             </LocationContainer>
             <LocationImageContainer>
               <ImgTitle>흡연 구역 사진</ImgTitle>
-              <AddImage />
+              <AddImage addImgSrc={addImgSrc} />
             </LocationImageContainer>
             <TextareaContainer>
               <SmokingInfo>흡연 구역 설명(필수)</SmokingInfo>
               <Detail
-                defaultValue={content}
+                value={content}
                 onChange={handleChange}
                 placeholder="내용을 입력해 주세요."
               />
