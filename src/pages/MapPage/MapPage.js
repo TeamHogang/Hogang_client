@@ -6,6 +6,7 @@ import { Circle, Map, MapMarker } from "react-kakao-maps-sdk";
 import refreshIcon from "../../assets/img/refreshIcon.png";
 import plusIcon from "../../assets/img/plusIcon.png";
 import { GetMarkerList } from "../../api/mapApi";
+import {Auth} from "../../api/userApi";
 
 const MapContainer = styled.div`
   display: flex;
@@ -157,6 +158,7 @@ const DetailContent = styled.div`
 
 function MapPage() {
   /*global kakao*/
+  const navigate = useNavigate();
   const [myLocation, setMyLocation] = useState({
     center: {
       lat: 37.5590083,
@@ -166,12 +168,25 @@ function MapPage() {
     isLoading: true,
   });
   const [markers, setMarkers] = useState([]);
-
-  const navigate = useNavigate();
   const [smokingBtnActive, setSmokingBtnActive] = useState(false); // 흡연구역 버튼 actvie 상태
   const [nonSmokingBtnActive, setNonSmokingBtnActive] = useState(false); // 금연구역 버튼 actvie 상태
   const [isVisible, setIsVisible] = useState("2"); // 0: 흡연구역 1: 금연구역 2: 모든 구역
   const [flag, setFlag] = useState(false);
+    useEffect(() => {
+      // Home 페이지 들어오자마자 Admin인지 아닌지 axios를 통해 확인.
+      //  if(axios~~) 해서 isAdmin true -> setIsAdmin(true);
+      let data = {
+        "X-AUTH-TOKEN": window.localStorage.getItem("X-AUTH-TOKEN"),
+      };
+      Auth(data).then((res) => {
+        if (!res.isAuth) {
+          alert("로그인 후 이용해주세요.");
+          navigate("/login");
+        }
+      });
+
+    }, []);
+
   useEffect(() => {
     if (navigator.geolocation) {
       // GeoLocation을 이용하여 접속 위치를 얻어옴

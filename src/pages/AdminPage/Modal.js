@@ -133,8 +133,9 @@ const Modal = ({
 }) => {
   const [selected, setSelected] = useState(selectedData);
   console.log(selected);
+  
   const onReject = () => {
-    handleReject();
+    handleReject(selected);
   };
 
   const onSubmit = () => {
@@ -158,17 +159,17 @@ const Modal = ({
           <FormInfo>
             <SmokingInfoContainer>
               <SmokingInfo>흡연구역 위치정보</SmokingInfo>
-              <SmokingDemandInfo>{selected.info}</SmokingDemandInfo>
+              <SmokingDemandInfo>{selected.prhsmknm}</SmokingDemandInfo>
             </SmokingInfoContainer>
             <SmokingInfoContainer>
               <SmokingInfo>흡연구역 설명</SmokingInfo>
-              <SmokingDemandInfo>{selected.description}</SmokingDemandInfo>
+              <SmokingDemandInfo>{selected.content}</SmokingDemandInfo>
             </SmokingInfoContainer>
             <SmokingImageNameContainer>
               <SmokingInfo>흡연구역 사진</SmokingInfo>
             </SmokingImageNameContainer>
             <SmokingImageContainer>
-              <SmokingImage src={selected.photo} />
+              <SmokingImage src={selected.img} />
             </SmokingImageContainer>
           </FormInfo>
           <ButtonContainer>

@@ -3,6 +3,8 @@ import styled from "styled-components";
 // import { useNavigate } from "react-router-dom";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import DetailModal from "../../components/DetailModal";
+import {Auth} from "../../api/userApi";
+import { useNavigate } from "react-router-dom";
 
 const MapContainer = styled.div`
   display: flex;
@@ -30,6 +32,7 @@ const AreaSelectButton = styled.button`
 
 function AddLocation() {
   /*global kakao*/
+  const navigate = useNavigate();
   const [myLocation, setMyLocation] = useState({
     center: {
       lat: 37.5590083,
@@ -50,6 +53,20 @@ function AddLocation() {
   };
 
   const [locationDetail, setLocationDetail] = useState("");
+
+  useEffect(() => {
+    // Home 페이지 들어오자마자 Admin인지 아닌지 axios를 통해 확인.
+    //  if(axios~~) 해서 isAdmin true -> setIsAdmin(true);
+    let data = {
+      "X-AUTH-TOKEN": window.localStorage.getItem("X-AUTH-TOKEN"),
+    };
+    Auth(data).then((res) => {
+      if (!res.isAuth) {
+        alert("로그인 후 이용해주세요.");
+        navigate("/login");
+      }
+    });
+  }, []);
 
   function getAddr(position) {
     let geocoder = new kakao.maps.services.Geocoder();

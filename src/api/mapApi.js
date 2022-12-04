@@ -16,7 +16,7 @@ export const PostMarkerDetail = async (data) => {
     };
     const response = await api
       .post(
-        `${process.env.REACT_APP_SERVER_URL}/map/putMarkerDetail`, data,
+        `${process.env.REACT_APP_SERVER_URL}/map/putMarkerDetail`,data,
         config
       )
       .then(function (response) {

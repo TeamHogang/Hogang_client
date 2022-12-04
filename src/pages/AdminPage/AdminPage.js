@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLessThan } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import Modal from "./Modal";
+import {
+  GetDemandsList,
+  PostAcceptList,
+  DeleteRejectList,
+} from "../../api/adminApi";
 
 const Container = styled.div`
   display: flex;
@@ -73,13 +78,16 @@ function AdminPage() {
 
   const handleSave = (data) => {
     // 수락할 시에 디비에 정보 저장
+    PostAcceptList(data);
   };
 
   const modalOffHandler = () => {
     setModalOn(false);
   };
 
-  const handleReject = () => {
+  const handleReject = (data) => {
+    console.log(data);
+    DeleteRejectList(data);
     setModalOn(false);
     // 거절하고 나서 요청 디비에서 사라지도록 ~~
   };
@@ -90,33 +98,42 @@ function AdminPage() {
     setModalOn(false);
   };
 
-  const demands = [
-    {
-      nickname: "원덩덩",
-      info: "서울시 중구 필동로 1길 30",
-      description: "동국대학교 신공학관 9층",
-      photo:
-        "https://upload.wikimedia.org/wikipedia/commons/c/c2/DONGGUK_UNIVERSITY_%ED%8C%94%EC%A0%95%EB%8F%84.jpg",
-    },
-    {
-      info: "서울시 중구 필동로 2길 30",
-    },
-    {
-      info: "서울시 중구 필동로 3길 30",
-    },
-    {
-      info: "서울시 중구 필동로 4길 30",
-    },
-    {
-      info: "서울시 중구 필동로 5길 30",
-    },
-    {
-      info: "서울시 중구 필동로 6길 30",
-    },
-    {
-      info: "서울시 중구 필동로 7길 30",
-    },
-  ];
+  // const demands = [
+  //   {
+  //     nickname: "원덩덩",
+  //     info: "서울시 중구 필동로 1길 30",
+  //     description: "동국대학교 신공학관 9층",
+  //     photo:
+  //       "https://upload.wikimedia.org/wikipedia/commons/c/c2/DONGGUK_UNIVERSITY_%ED%8C%94%EC%A0%95%EB%8F%84.jpg",
+  //   },
+  //   {
+  //     info: "서울시 중구 필동로 2길 30",
+  //   },
+  //   {
+  //     info: "서울시 중구 필동로 3길 30",
+  //   },
+  //   {
+  //     info: "서울시 중구 필동로 4길 30",
+  //   },
+  //   {
+  //     info: "서울시 중구 필동로 5길 30",
+  //   },
+  //   {
+  //     info: "서울시 중구 필동로 6길 30",
+  //   },
+  //   {
+  //     info: "서울시 중구 필동로 7길 30",
+  //   },
+  // ];
+  const [demands, setDemands] = useState([]);
+
+  //서버에서 요청 정보 받아오기
+  useEffect(() => {
+    GetDemandsList().then((res) => {
+      console.log(res.data);
+      setDemands(res.data.requestedmarker);
+    });
+  }, []);
 
   const backHandler = () => {
     navigate("/");
@@ -130,23 +147,23 @@ function AdminPage() {
         <Admin>관리자 페이지</Admin>
       </SubHeaderContainer>
       <DemandContainer>
-        {demands.map((demand, index) => (
+        {demands && demands.map((demand, index) => (
           <Demand
             key={index}
             onClick={() => {
               setModalOn(true);
               const selectedData = {
-                nickname: demand.nickname,
-                info: demand.info,
-                description: demand.description,
-                photo: demand.photo,
+                nickname: demand.userFrom.nickname,
+                prhsmknm: demand.prhsmknm,
+                content: demand.content,
+                img: demand.img,
               };
               console.log(selectedData);
               setSelected(selectedData);
             }}
           >
             <DemandTitle>흡연구역 요청 </DemandTitle>
-            <DemandInfo>{demand.info}</DemandInfo>
+            <DemandInfo>{demand.prhsmknm}</DemandInfo>
           </Demand>
         ))}
       </DemandContainer>
