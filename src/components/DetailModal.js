@@ -4,6 +4,7 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 import AddImage from "./AddImage";
+import { PostMarkerDetail } from "../api/mapApi";
 
 const ModalContainer = styled.div`
   position: fixed;
@@ -134,10 +135,23 @@ const LocationInfo = styled.div`
   font-size: small;
 `;
 
-function DetailModal({ onClose, locationDetail }) {
+function DetailModal({ onClose, locationDetail, position }) {
   /*global kakao*/
   const handleClose = () => {
     onClose?.();
+  };
+
+  const submitHandler = () => {
+    let data = {
+      locationDetail: locationDetail,
+      imageSrc: imageSrc,
+      content: content,
+      latitude: position.lat,
+      longitude: position.lng,
+      type: 1
+    };
+    console.log(data);
+    PostMarkerDetail(data);
   };
 
   const [content, setContent] = useState("");
@@ -175,7 +189,7 @@ function DetailModal({ onClose, locationDetail }) {
             </TextareaContainer>
           </FormInfo>
           <ButtonContainer>
-            <SubmitButton>제출하기</SubmitButton>
+            <SubmitButton onClick={submitHandler}>제출하기</SubmitButton>
             <CancelButton onClick={handleClose}>취소</CancelButton>
           </ButtonContainer>
         </form>
