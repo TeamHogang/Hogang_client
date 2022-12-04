@@ -11,12 +11,23 @@ export const GetMarkerList = async () => {
 };
 
 export const PostMarkerDetail = async (data) => {
-    const response = await api.post(`${process.env.REACT_APP_SERVER_URL}/map/putMarkerDetail`
-    ,data).then(function(response){
-      console.log(response);
-    }).then(function(error){
-      console.log(error);
-    });
+    const config = {
+      header: { 'content-type': 'multipart/form-data' },
+    };
+    const response = await api
+      .post(
+        `${process.env.REACT_APP_SERVER_URL}/map/putMarkerDetail`, data,
+        config
+      )
+      .then(function (response) {
+        console.log(response);
+      })
+      .then(function (error) {
+        console.log(error);
+      });
 
     return response;
-}
+};
+
+
+

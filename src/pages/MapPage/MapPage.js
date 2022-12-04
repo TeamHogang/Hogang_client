@@ -223,7 +223,7 @@ function MapPage() {
         <DetailInfo key={key}>
           <DetailTitle>{name}</DetailTitle>
           <DetailBody>
-            <DetailImg src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png"></DetailImg>
+            <DetailImg src={img} onerror="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png"></DetailImg>
             <DetailContent>{info}</DetailContent>
           </DetailBody>
         </DetailInfo>

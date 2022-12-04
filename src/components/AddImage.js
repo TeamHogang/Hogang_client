@@ -12,7 +12,7 @@ const ImgWrap = styled.div`
   width: 70vw;
 `;
 
-const UploadInput = styled.form``;
+const UploadInput = styled.div``;
 
 const InputImg = styled.input`
   position: absolute;
@@ -52,8 +52,10 @@ const PreviewImg = styled.img`
   aspect-ratio: 4 / 3;
 `;
 
-const AddImage = () => {
+const AddImage = ({ addImgSrc }) => {
   const encodeFileToBase64 = (fileBlob) => {
+    addImgSrc(fileBlob);
+    //console.log(fileBlob);
     const reader = new FileReader();
     reader.readAsDataURL(fileBlob);
     return new Promise((resolve) => {
@@ -63,8 +65,10 @@ const AddImage = () => {
       };
     });
   };
-  const [imageSrc, setImageSrc] = useState("");
 
+  const [imageSrc, setImageSrc] = useState("");
+  //console.log(imageSrc); // 디버깅용
+  
   return (
     <UploadImage>
       <UploadInput>
