@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
@@ -138,10 +138,15 @@ const LocationInfo = styled.div`
 function DetailModal({ onClose, locationDetail, position }) {
   /*global kakao*/
   const [imageSrc,setImageSrc] = useState(null);
+  const [userFrom,setUserFrom] = useState();
 
   console.log("디테일모달");
   console.log(position);
   console.log(locationDetail);
+
+  useEffect(()=>{
+    setUserFrom(localStorage.getItem("X-AUTH-TOKEN"));
+  },[]);
 
   const addImgSrc = (imgSrc) => {
     setImageSrc(imgSrc);
@@ -153,13 +158,13 @@ function DetailModal({ onClose, locationDetail, position }) {
   };
 
   const submitHandler = () => {
-   
     const formData = new FormData();
 
     formData.append("prhsmknm", locationDetail);
     formData.append("content", content);
     formData.append("latitude", position.lat);
     formData.append("longitude", position.lng);
+    formData.append("userFrom",userFrom);
     formData.append("type", 1);
     formData.append("img", imageSrc);
     
@@ -172,6 +177,8 @@ function DetailModal({ onClose, locationDetail, position }) {
     setContent(e.target.value);
     console.log(content);
   };
+
+  console.log(content);
 
   const offHandler = () => {};
 
