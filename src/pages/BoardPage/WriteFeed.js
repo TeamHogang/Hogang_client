@@ -127,6 +127,10 @@ function WriteFeed() {
 
   useEffect(() => {
     console.log(isEdit);
+    if (isEdit) {
+      setTitle(location.state.title);
+      setContent(location.state.content);
+    }
   }, []);
 
   return (
@@ -148,23 +152,49 @@ function WriteFeed() {
           <RegisterButton onClick={registerHandler}>등록하기</RegisterButton>
         )}
       </SubHeaderContainer>
-      <TitleContainer>
-        <Title
-          type="text"
-          name="title"
-          placeholder="제목"
-          value={title}
-          onChange={titleChange}
-        />
-      </TitleContainer>
-      <TextareaContainer>
-        <TextArea
-          placeholder="내용을 입력해주세요."
-          name="content"
-          value={content}
-          onChange={contentChange}
-        ></TextArea>
-      </TextareaContainer>
+      {isEdit ? (
+        <div>
+          <TitleContainer>
+            <Title
+              type="text"
+              name="title"
+              placeholder="제목"
+              value={title}
+              onChange={titleChange}
+            />
+          </TitleContainer>
+          <TextareaContainer>
+            <TextArea
+              placeholder="내용을 입력해주세요."
+              name="content"
+              value={content}
+              onChange={contentChange}
+            ></TextArea>
+          </TextareaContainer>
+          )
+        </div>
+      ) : (
+        <div>
+          <TitleContainer>
+            <Title
+              type="text"
+              name="title"
+              placeholder="제목"
+              value={title}
+              onChange={titleChange}
+            />
+          </TitleContainer>
+          <TextareaContainer>
+            <TextArea
+              placeholder="내용을 입력해주세요."
+              name="content"
+              value={content}
+              onChange={contentChange}
+            ></TextArea>
+          </TextareaContainer>
+          )
+        </div>
+      )}
     </Container>
   );
 }

@@ -224,7 +224,14 @@ function Feed() {
   };
 
   const editArticleHandler = () => {
-    navigate("/write", { state: { isEdit: true, id: id } });
+    navigate("/write", {
+      state: {
+        isEdit: true,
+        id: id,
+        content: feed.contents,
+        title: feed.title,
+      },
+    });
   };
 
   const contentChange = (e) => {
