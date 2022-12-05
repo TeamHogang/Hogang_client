@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 import AddImage from "./AddImage";
 import { PostMarkerDetail } from "../api/mapApi";
+import { useNavigate } from "react-router-dom";
+import { Auth } from "../api/userApi";
 
 const ModalContainer = styled.div`
   position: fixed;
@@ -137,48 +139,53 @@ const LocationInfo = styled.div`
 
 function DetailModal({ onClose, locationDetail, position }) {
   /*global kakao*/
-  const [imageSrc,setImageSrc] = useState(null);
-  const [userFrom,setUserFrom] = useState();
+  const [imageSrc, setImageSrc] = useState(null);
+  const [userFrom, setUserFrom] = useState();
+  const navigate = useNavigate();
 
-  console.log("디테일모달");
-  console.log(position);
-  console.log(locationDetail);
-
-  useEffect(()=>{
-    setUserFrom(localStorage.getItem("X-AUTH-TOKEN"));
-  },[]);
+  useEffect(() => {
+    // setUserFrom(localStorage.getItem("X-AUTH-TOKEN"));
+    let data = {
+      "X-AUTH-TOKEN": window.localStorage.getItem("X-AUTH-TOKEN"),
+    };
+    Auth(data).then((res) => {
+      setUserFrom(res._id);
+    });
+  }, []);
 
   const addImgSrc = (imgSrc) => {
     setImageSrc(imgSrc);
     console.log(imgSrc);
-  }
+  };
 
   const handleClose = () => {
     onClose?.();
   };
 
   const submitHandler = () => {
+    // e.preventDefault();
     const formData = new FormData();
 
     formData.append("prhsmknm", locationDetail);
     formData.append("content", content);
     formData.append("latitude", position.lat);
     formData.append("longitude", position.lng);
-    formData.append("userFrom",userFrom);
+    formData.append("userFrom", userFrom);
     formData.append("type", 1);
     formData.append("img", imageSrc);
-    
-    console.log(formData);
-    PostMarkerDetail(formData);
+
+    PostMarkerDetail(formData).then((res) => {
+      if (res.status === 200) {
+        alert("흡연구역 요청이 완료되었습니다.");
+        navigate("/map");
+      }
+    });
   };
 
   const [content, setContent] = useState("");
   const handleChange = (e) => {
     setContent(e.target.value);
-    console.log(content);
   };
-
-  console.log(content);
 
   const offHandler = () => {};
 
@@ -190,7 +197,7 @@ function DetailModal({ onClose, locationDetail, position }) {
             <FontAwesomeIcon icon={faTimes} />
           </BackButton>
         </ModalHeader>
-        <form>
+        <div>
           <FormInfo>
             <LocationContainer>
               <LocationTitle>흡연 구역 위치 정보</LocationTitle>
@@ -213,7 +220,7 @@ function DetailModal({ onClose, locationDetail, position }) {
             <SubmitButton onClick={submitHandler}>제출하기</SubmitButton>
             <CancelButton onClick={handleClose}>취소</CancelButton>
           </ButtonContainer>
-        </form>
+        </div>
       </ModalWrapper>
     </ModalContainer>
   );

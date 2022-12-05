@@ -3,7 +3,7 @@ import styled from "styled-components";
 // import { useNavigate } from "react-router-dom";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import DetailModal from "../../components/DetailModal";
-import {Auth} from "../../api/userApi";
+import { Auth } from "../../api/userApi";
 import { useNavigate } from "react-router-dom";
 
 const MapContainer = styled.div`
@@ -125,7 +125,6 @@ function AddLocation() {
             lat: MouseEvent.latLng.getLat(),
             lng: MouseEvent.latLng.getLng(),
           });
-          console.log(position);
         }}
       >
         {position ? <MapMarker position={position} /> : <></>}
