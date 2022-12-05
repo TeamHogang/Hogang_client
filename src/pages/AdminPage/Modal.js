@@ -1,6 +1,6 @@
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const ModalContainer = styled.div`
@@ -133,13 +133,15 @@ const Modal = ({
 }) => {
   const [selected, setSelected] = useState(selectedData);
   console.log(selected);
-  
+
+  const [imageSrc, setImageSrc] = useState("");
+
   const onReject = () => {
-    handleReject(selected);
+    handleReject(selected.id);
   };
 
   const onSubmit = () => {
-    handleSubmit();
+    handleSubmit(selected.id);
   };
 
   const offHandler = () => {
@@ -169,7 +171,9 @@ const Modal = ({
               <SmokingInfo>흡연구역 사진</SmokingInfo>
             </SmokingImageNameContainer>
             <SmokingImageContainer>
-              <SmokingImage src={selected.img} />
+              <SmokingImage
+                src={`${process.env.REACT_APP_SERVER_URL}/${selected.url}`}
+              />
             </SmokingImageContainer>
           </FormInfo>
           <ButtonContainer>

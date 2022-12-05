@@ -6,7 +6,7 @@ import { Circle, Map, MapMarker } from "react-kakao-maps-sdk";
 import refreshIcon from "../../assets/img/refreshIcon.png";
 import plusIcon from "../../assets/img/plusIcon.png";
 import { GetMarkerList } from "../../api/mapApi";
-import {Auth} from "../../api/userApi";
+import { Auth } from "../../api/userApi";
 
 const MapContainer = styled.div`
   display: flex;
@@ -172,20 +172,19 @@ function MapPage() {
   const [nonSmokingBtnActive, setNonSmokingBtnActive] = useState(false); // 금연구역 버튼 actvie 상태
   const [isVisible, setIsVisible] = useState("2"); // 0: 흡연구역 1: 금연구역 2: 모든 구역
   const [flag, setFlag] = useState(false);
-    useEffect(() => {
-      // Home 페이지 들어오자마자 Admin인지 아닌지 axios를 통해 확인.
-      //  if(axios~~) 해서 isAdmin true -> setIsAdmin(true);
-      let data = {
-        "X-AUTH-TOKEN": window.localStorage.getItem("X-AUTH-TOKEN"),
-      };
-      Auth(data).then((res) => {
-        if (!res.isAuth) {
-          alert("로그인 후 이용해주세요.");
-          navigate("/login");
-        }
-      });
-
-    }, []);
+  useEffect(() => {
+    // Home 페이지 들어오자마자 Admin인지 아닌지 axios를 통해 확인.
+    //  if(axios~~) 해서 isAdmin true -> setIsAdmin(true);
+    let data = {
+      "X-AUTH-TOKEN": window.localStorage.getItem("X-AUTH-TOKEN"),
+    };
+    Auth(data).then((res) => {
+      if (!res.isAuth) {
+        alert("로그인 후 이용해주세요.");
+        navigate("/login");
+      }
+    });
+  }, []);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -238,7 +237,10 @@ function MapPage() {
         <DetailInfo key={key}>
           <DetailTitle>{name}</DetailTitle>
           <DetailBody>
-            <DetailImg src={img} onerror="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png"></DetailImg>
+            <DetailImg
+              src={img}
+              onerror="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png"
+            ></DetailImg>
             <DetailContent>{info}</DetailContent>
           </DetailBody>
         </DetailInfo>
@@ -248,7 +250,8 @@ function MapPage() {
 
   // 마커 디테일창 생성
   for (let i = 0; i < markers.length; i++) {
-    if (markers.type === 1) { // 흡연구역일 경우 마커 디테일창 생성
+    if (markers.type === 1) {
+      // 흡연구역일 경우 마커 디테일창 생성
       markers[i].content = (
         <MarkerDetail key={markers[i].id} data={markers[i]} />
       );
@@ -263,6 +266,11 @@ function MapPage() {
         {isOpen && content}
       </MapMarker>
     );
+  };
+
+  // 리프레시
+  const updateLocationHandler = () => {
+    window.location.replace("/map");
   };
 
   // 흡연구역 버튼 클릭 이벤트
@@ -328,46 +336,53 @@ function MapPage() {
           level={4} //지도의 확대 레벨
           draggable={true}
         >
-          {markers && markers.map((marker) => {
-            //console.log(markers);
-            if ((isVisible === "2" || isVisible === "0") && marker.type === 0) {
-              return (
-                <Circle
-                  key={marker._id}
-                  center={{
-                    lat: marker.latitude,
-                    lng: marker.longitude,
-                  }}
-                  radius={marker.prhsmkar} // 흡연구역 범위
-                  strokeWeight={3}
-                  strokeOpacity={0.1}
-                  fillColor={"#800020"}
-                  fillOpacity={0.5}
-                />
-              );
-            }
-            if ((isVisible === "2" || isVisible === "1") && marker.type === 1) {
-              // console.log(markers);
-              return (
-                <EventMarkerContainer
-                  key={marker._id}
-                  position={{
-                    lat: `${marker.latitude}`,
-                    lng: `${marker.longitude}`,
-                  }} // 마커를 표시할 위치
-                  image={{
-                    src: "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png", // 마커이미지의 주소입니다
-                    size: {
-                      width: 24,
-                      height: 35,
-                    }, // 마커이미지의 크기입니다
-                  }}
-                  title={marker.name} // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-                  content={marker.content}
-                />
-              );
-            }
-          })}
+          {markers &&
+            markers.map((marker) => {
+              //console.log(markers);
+              if (
+                (isVisible === "2" || isVisible === "0") &&
+                marker.type === 0
+              ) {
+                return (
+                  <Circle
+                    key={marker._id}
+                    center={{
+                      lat: marker.latitude,
+                      lng: marker.longitude,
+                    }}
+                    radius={marker.prhsmkar} // 흡연구역 범위
+                    strokeWeight={3}
+                    strokeOpacity={0.1}
+                    fillColor={"#800020"}
+                    fillOpacity={0.5}
+                  />
+                );
+              }
+              if (
+                (isVisible === "2" || isVisible === "1") &&
+                marker.type === 1
+              ) {
+                // console.log(markers);
+                return (
+                  <EventMarkerContainer
+                    key={marker._id}
+                    position={{
+                      lat: `${marker.latitude}`,
+                      lng: `${marker.longitude}`,
+                    }} // 마커를 표시할 위치
+                    image={{
+                      src: "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png", // 마커이미지의 주소입니다
+                      size: {
+                        width: 24,
+                        height: 35,
+                      }, // 마커이미지의 크기입니다
+                    }}
+                    title={marker.name} // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+                    content={marker.content}
+                  />
+                );
+              }
+            })}
         </Map>
         <SmokingAreaButton
           id="SmokingArea"
@@ -386,7 +401,7 @@ function MapPage() {
         >
           금연 구역
         </NonSmokingAreaButton>
-        <UpdateLocationButton />
+        <UpdateLocationButton onClick={updateLocationHandler} />
         <PlusSmokingAreaButton onClick={addSmokingLocationHandler} />
       </MapContainer>
     </div>
