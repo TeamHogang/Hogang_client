@@ -55,7 +55,7 @@ const PreviewImg = styled.img`
 const AddImage = ({ addImgSrc }) => {
   const encodeFileToBase64 = (fileBlob) => {
     addImgSrc(fileBlob);
-    //console.log(fileBlob);
+    // console.log(fileBlob);
     const reader = new FileReader();
     reader.readAsDataURL(fileBlob);
     return new Promise((resolve) => {
@@ -68,7 +68,7 @@ const AddImage = ({ addImgSrc }) => {
 
   const [imageSrc, setImageSrc] = useState("");
   //console.log(imageSrc); // 디버깅용
-  
+
   return (
     <UploadImage>
       <UploadInput>

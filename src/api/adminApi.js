@@ -1,24 +1,26 @@
 import api from "./index";
 
 export const GetDemandsList = async () => {
-  const response = await api.get(
-    `${process.env.REACT_APP_SERVER_URL}/admin`
-  );
+  const response = await api.get(`${process.env.REACT_APP_SERVER_URL}/admin`);
   return response;
 };
 
-export const PostAcceptList = async (data) => {
-    const response = await api.post(
-      `${process.env.REACT_APP_SERVER_URL}/admin/accept`,data
-    );
-    console.log(response);
-    return response;
-}
+export const GetImg = async (path) => {
+  const response = await api.get(`${process.env.REACT_APP_SERVER_URL}/${path}`);
+  return response;
+};
 
-export const DeleteRejectList = async (data) => {
+export const PostAcceptList = async (id) => {
+  const response = await api.post(
+    `${process.env.REACT_APP_SERVER_URL}/admin/accept/${id}`
+  );
+  console.log(response);
+  return response;
+};
+
+export const DeleteRejectList = async (id) => {
   const response = await api.delete(
-    `${process.env.REACT_APP_SERVER_URL}/admin/reject`,
-    data
+    `${process.env.REACT_APP_SERVER_URL}/admin/reject/${id}`
   );
   console.log(response);
   return response;
