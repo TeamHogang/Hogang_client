@@ -21,6 +21,7 @@ const Input = styled.input`
   line-height: 40px;
   padding: 0px 10px;
   display: flex;
+  outline: none;
 `;
 
 const SearchButton = styled.button`
