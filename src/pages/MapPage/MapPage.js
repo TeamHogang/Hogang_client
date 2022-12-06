@@ -1,5 +1,5 @@
 /*eslint-disable */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { Circle, Map, MapMarker } from "react-kakao-maps-sdk";
@@ -7,6 +7,7 @@ import refreshIcon from "../../assets/img/refreshIcon.png";
 import plusIcon from "../../assets/img/plusIcon.png";
 import { GetMarkerList } from "../../api/mapApi";
 import { Auth } from "../../api/userApi";
+import MarkerModal from "./MarkerModal";
 
 const MapContainer = styled.div`
   display: flex;
@@ -139,15 +140,15 @@ const DetailBody = styled.div`
   position: relative;
   overflow: hidden;
 `;
-const DetailImg = styled.div`
-  position: absolute;
-  top: 6px;
+const DetailImg = styled.img`
+  /* position: absolute; */
+  /* top: 6px;
   left: 5px;
   width: 73px;
   height: 71px;
   border: 1px solid #ddd;
   color: #888;
-  overflow: hidden;
+  overflow: hidden; */
 `;
 
 const DetailContent = styled.div`
@@ -219,59 +220,51 @@ function MapPage() {
         res.data.marker
           .filter((marker) => marker.type === 1)
           .map((marker) => {
-            marker.content = <MarkerDetail id={marker._id} data={marker} />;
+            marker.content = {
+              prhsmknm: marker.prhsmknm,
+              content: marker.info,
+              id: marker._id,
+              imgurl: marker.imgurl,
+            };
           });
     });
   }, []);
 
-  //마커 상세 정보창
-  const MarkerDetail = ({ id, data }) => {
-    const [name, setName] = useState();
-    const [info, setInfo] = useState();
-    const [img, setImg] = useState();
-
-    console.log(data);
-
-    useEffect(() => {
-      setName(data.prhsmknm);
-      setInfo(data.info);
-      setImg(data.imgurl);
-    });
-
-    // 마커 디테일창 UI
-    return (
-      <MarkerDetailContainer>
-        <DetailInfo key={id}>
-          <DetailTitle>{name}</DetailTitle>
-          <DetailBody>
-            <DetailImg
-              src={img}
-              onerror="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png"
-            ></DetailImg>
-            <DetailContent>{info}</DetailContent>
-          </DetailBody>
-        </DetailInfo>
-      </MarkerDetailContainer>
-    );
-  };
-
-  // 마커 디테일창 생성
-  // for (let i = 0; i < markers.length; i++) {
-  //   if (markers.type === 1) {
-  //     // 흡연구역일 경우 마커 디테일창 생성
-  //     markers[i].content = (
-  //       <MarkerDetail key={markers[i].id} data={markers[i]} />
-  //     );
-  //   }
-  // }
-
   // 마커 클릭 이벤트
   const EventMarkerContainer = ({ position, content }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const [isModal, setIsModal] = useState(false);
+    const [selected, setSelected] = useState("");
+
+    const modalOffHandler = () => {
+      setIsModal(false);
+    };
+
+    console.log(content);
+
     return (
-      <MapMarker position={position} onClick={() => setIsOpen(!isOpen)}>
-        {isOpen && content}
-      </MapMarker>
+      <div>
+        <MapMarker
+          position={position}
+          onClick={() => {
+            setIsOpen(!isOpen);
+            setIsModal(!isModal);
+            const selectedData = {
+              prhsmknm: content.prhsmknm,
+              content: content.content,
+              id: content._id,
+              imgurl: content.imgurl,
+            };
+            setSelected(selectedData);
+          }}
+        ></MapMarker>
+        {isModal && content && (
+          <MarkerModal
+            selectedData={selected}
+            modalOffHandler={modalOffHandler}
+          />
+        )}
+      </div>
     );
   };
 
@@ -382,7 +375,7 @@ function MapPage() {
                         height: 35,
                       }, // 마커이미지의 크기입니다
                     }}
-                    title={marker.name} // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+                    // title={marker.name} // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
                     content={marker.content}
                   />
                 );
@@ -413,4 +406,4 @@ function MapPage() {
   );
 }
 
-export default MapPage;
+export default React.memo(MapPage);
