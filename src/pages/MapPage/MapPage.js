@@ -172,6 +172,7 @@ function MapPage() {
   const [nonSmokingBtnActive, setNonSmokingBtnActive] = useState(false); // 금연구역 버튼 actvie 상태
   const [isVisible, setIsVisible] = useState("2"); // 0: 흡연구역 1: 금연구역 2: 모든 구역
   const [flag, setFlag] = useState(false);
+
   useEffect(() => {
     // Home 페이지 들어오자마자 Admin인지 아닌지 axios를 통해 확인.
     //  if(axios~~) 해서 isAdmin true -> setIsAdmin(true);
@@ -214,11 +215,17 @@ function MapPage() {
   useEffect(() => {
     GetMarkerList().then((res) => {
       setMarkers(res.data.marker);
+      res.data.marker &&
+        res.data.marker
+          .filter((marker) => marker.type === 1)
+          .map((marker) => {
+            marker.content = <MarkerDetail id={marker._id} data={marker} />;
+          });
     });
   }, []);
 
   //마커 상세 정보창
-  const MarkerDetail = ({ key, data }) => {
+  const MarkerDetail = ({ id, data }) => {
     const [name, setName] = useState();
     const [info, setInfo] = useState();
     const [img, setImg] = useState();
@@ -228,13 +235,13 @@ function MapPage() {
     useEffect(() => {
       setName(data.prhsmknm);
       setInfo(data.info);
-      setImg(data.img);
+      setImg(data.imgurl);
     });
 
     // 마커 디테일창 UI
     return (
       <MarkerDetailContainer>
-        <DetailInfo key={key}>
+        <DetailInfo key={id}>
           <DetailTitle>{name}</DetailTitle>
           <DetailBody>
             <DetailImg
@@ -249,14 +256,14 @@ function MapPage() {
   };
 
   // 마커 디테일창 생성
-  for (let i = 0; i < markers.length; i++) {
-    if (markers.type === 1) {
-      // 흡연구역일 경우 마커 디테일창 생성
-      markers[i].content = (
-        <MarkerDetail key={markers[i].id} data={markers[i]} />
-      );
-    }
-  }
+  // for (let i = 0; i < markers.length; i++) {
+  //   if (markers.type === 1) {
+  //     // 흡연구역일 경우 마커 디테일창 생성
+  //     markers[i].content = (
+  //       <MarkerDetail key={markers[i].id} data={markers[i]} />
+  //     );
+  //   }
+  // }
 
   // 마커 클릭 이벤트
   const EventMarkerContainer = ({ position, content }) => {
@@ -320,8 +327,6 @@ function MapPage() {
       setIsVisible("0");
     }
   };
-
-  console.log(markers);
 
   return (
     <div>
