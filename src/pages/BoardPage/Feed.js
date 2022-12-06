@@ -1,7 +1,9 @@
+/*eslint-disable */
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLessThan } from "@fortawesome/free-solid-svg-icons";
+import { faLessThan, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useParams } from "react-router-dom";
 import { DeleteArticle, GetFeed } from "../../api/articleApi";
 import { Auth } from "../../api/userApi";
@@ -72,7 +74,9 @@ const DeleteEditContainer = styled.div`
 `;
 
 const Delete = styled.button`
-  color: #e6e8e7;
+  display: flex;
+  align-items: center;
+  color: #777777;
   font-weight: 600;
   font-size: small;
   margin-right: 10px;
@@ -81,9 +85,11 @@ const Delete = styled.button`
 `;
 
 const Edit = styled.div`
+  display: flex;
   color: black;
   font-weight: 600;
   font-size: small;
+  align-items: center;
 `;
 
 const Detail = styled.div`
@@ -96,19 +102,28 @@ const Detail = styled.div`
 const Title = styled.div`
   display: flex;
   align-items: flex-start;
+  font-size: large;
+  font-weight: 700;
   margin-left: 20px;
 `;
 
 const Content = styled.div`
-  margin-top: 10px;
-  height: 300px;
+  margin-top: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+  min-height: 300px;
+  display: flex;
+  align-items: flex-start;
   border-bottom: 1px solid #e6e8e7;
+  white-space: pre;
+  font-size: medium;
 `;
 
 const CommentContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 10px;
+  margin-bottom: 50px;
 `;
 
 const Comment = styled.div`
@@ -122,13 +137,13 @@ const Comment = styled.div`
 const CommentNickDate = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   margin-bottom: 10px;
 `;
 
 const CommentNickname = styled.div`
   display: flex;
-  /* justify-content: flex-start; */
+  justify-content: flex-start;
   font-size: small;
   margin-left: 20px;
 `;
@@ -144,9 +159,24 @@ const CommentContent = styled.div`
 const CommentDate = styled.div`
   color: #a9a9a9;
   display: flex;
-  /* justify-content: flex-end; */
+  justify-content: flex-end;
+  align-items: center;
   font-size: xx-small;
-  margin-right: 20px;
+  margin-left: auto;
+  /* margin-right: 20px; */
+`;
+
+const CommentDelete = styled.button`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  color: #777777;
+  font-weight: 600;
+  font-size: small;
+  border: none;
+  background-color: white;
+  align-items: center;
+  margin-right: 10px;
 `;
 
 const WriteCommentContainer = styled.div`
@@ -156,7 +186,7 @@ const WriteCommentContainer = styled.div`
   left: 0;
   width: 100vw;
   height: 50px;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  /* box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; */
   z-index: 999;
 `;
 
@@ -166,10 +196,11 @@ const CommentInput = styled.input`
   justify-content: center;
   border: none;
   font-weight: bold;
-  font-size: 20px;
+
   width: 80vw;
   border-top: 1px solid #e6e8e7;
   outline: none;
+  margin: 0;
 `;
 
 const CommentButton = styled.div`
@@ -179,6 +210,7 @@ const CommentButton = styled.div`
   justify-content: center;
   align-items: center;
   font-weight: bold;
+  background-color: white;
 `;
 
 function Feed() {
@@ -281,7 +313,7 @@ function Feed() {
           <NickEditContainer>
             <NickNameContainer>
               <Nickname>{nickname}</Nickname>
-              <Date>2022-11-27 21:20</Date>
+              <Date>{`${moment(feed.createdAt).format("YYYY.MM.DD")}`}</Date>
             </NickNameContainer>
             {user === feed.userFrom ? (
               <DeleteEditContainer>
@@ -308,15 +340,12 @@ function Feed() {
                       {comment.createdAt.substring(0, 10)}
                     </CommentDate>
                     {user === comment.userFrom._id ? (
-                      <DeleteEditContainer>
-                        <Delete
-                          value={comment._id}
-                          onClick={(e) => deleteCommentHandler(e)}
-                        >
-                          삭제
-                        </Delete>
-                        {/* <Edit onClick={editCommentHandler}>수정</Edit> */}
-                      </DeleteEditContainer>
+                      <CommentDelete
+                        value={comment._id}
+                        onClick={(e) => deleteCommentHandler(e)}
+                      >
+                        삭제
+                      </CommentDelete>
                     ) : (
                       <></>
                     )}
@@ -334,7 +363,9 @@ function Feed() {
             value={content}
             onChange={contentChange}
           ></CommentInput>
-          <CommentButton onClick={commentHandler}>작성</CommentButton>
+          <CommentButton onClick={commentHandler}>
+            <FontAwesomeIcon icon={faPaperPlane} />
+          </CommentButton>
         </WriteCommentContainer>
       </Container>
     )
