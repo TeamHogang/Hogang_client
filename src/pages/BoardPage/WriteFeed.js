@@ -171,7 +171,6 @@ function WriteFeed() {
               onChange={contentChange}
             ></TextArea>
           </TextareaContainer>
-          )
         </div>
       ) : (
         <div>
@@ -192,7 +191,6 @@ function WriteFeed() {
               onChange={contentChange}
             ></TextArea>
           </TextareaContainer>
-          )
         </div>
       )}
     </Container>

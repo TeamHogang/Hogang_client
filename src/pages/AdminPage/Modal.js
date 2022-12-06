@@ -1,3 +1,4 @@
+/*eslint-disable */
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
@@ -132,9 +133,6 @@ const Modal = ({
   modalOffHandler,
 }) => {
   const [selected, setSelected] = useState(selectedData);
-  console.log(selected);
-
-  const [imageSrc, setImageSrc] = useState("");
 
   const onReject = () => {
     handleReject(selected.id);
@@ -171,9 +169,7 @@ const Modal = ({
               <SmokingInfo>흡연구역 사진</SmokingInfo>
             </SmokingImageNameContainer>
             <SmokingImageContainer>
-              <SmokingImage
-                src={`${process.env.REACT_APP_SERVER_URL}/${selected.url}`}
-              />
+              <SmokingImage src={selected.imgurl} />
             </SmokingImageContainer>
           </FormInfo>
           <ButtonContainer>

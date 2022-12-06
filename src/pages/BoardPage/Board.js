@@ -67,7 +67,7 @@ const WriteButton = styled.button`
   position: fixed;
   font-weight: 700;
   left: 50%;
-  transform: translate(-50%, 300%);
+  transform: translate(-50%, 800%);
 `;
 
 function Board({ id }) {
@@ -147,7 +147,7 @@ function Board({ id }) {
             );
           })}
       </ArticleContainer>
-      <Loader />
+      {/* <Loader /> */}
       <WriteButton onClick={writeHandler}>글쓰기</WriteButton>
     </Container>
   );

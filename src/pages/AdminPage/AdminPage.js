@@ -1,3 +1,4 @@
+/*eslint-disable */
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -143,9 +144,8 @@ function AdminPage() {
                   nickname: demand.userFrom.nickname,
                   prhsmknm: demand.prhsmknm,
                   content: demand.content,
-                  img: demand.img,
                   id: demand._id,
-                  url: demand.url,
+                  imgurl: demand.imgurl,
                 };
                 console.log(selectedData);
                 setSelected(selectedData);
