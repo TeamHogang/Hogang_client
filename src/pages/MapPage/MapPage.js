@@ -2,7 +2,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { Circle, Map, MapMarker } from "react-kakao-maps-sdk";
+import { Circle, Map, MapMarker, Polyline } from "react-kakao-maps-sdk";
 import refreshIcon from "../../assets/img/refreshIcon.png";
 import plusIcon from "../../assets/img/plusIcon.png";
 import { GetMarkerList } from "../../api/mapApi";
@@ -172,7 +172,9 @@ function MapPage() {
   const [smokingBtnActive, setSmokingBtnActive] = useState(false); // 흡연구역 버튼 actvie 상태
   const [nonSmokingBtnActive, setNonSmokingBtnActive] = useState(false); // 금연구역 버튼 actvie 상태
   const [isVisible, setIsVisible] = useState("2"); // 0: 흡연구역 1: 금연구역 2: 모든 구역
-  const [flag, setFlag] = useState(false);
+  const [flag, setFlag] = useState(true);
+  const [level, setLevel] = useState(4);
+  const [currentMarkers, setCurrentMarkers] = useState([]);
 
   useEffect(() => {
     // Home 페이지 들어오자마자 Admin인지 아닌지 axios를 통해 확인.
@@ -212,23 +214,111 @@ function MapPage() {
     }
   }, []);
 
+  // level 4일 때 마커 정보를 업데이트하는 함수
+  useEffect(() => {
+    if (level === 4) {
+      markers.map((marker) => {
+        var pos = new kakao.maps.LatLng(
+          Number(marker.latitude),
+          Number(marker.longitude)
+        );
+        // 현재 지도의 중심좌표
+        var center = new kakao.maps.LatLng(
+          myLocation.center.lat,
+          myLocation.center.lng
+        );
+        var poly = new kakao.maps.Polyline({
+          path: [center, pos],
+        });
+        var dist = poly.getLength();
+        if (dist < 5000) {
+          // 5km 이내에 있는 마커들만 출력
+          currentMarkers.push(marker);
+        }
+      });
+    }
+    setCurrentMarkers(currentMarkers);
+  },[flag]);
+    
+
+
   //서버에서 마커정보 받아오기
   useEffect(() => {
-    GetMarkerList().then((res) => {
-      setMarkers(res.data.marker);
-      res.data.marker &&
-        res.data.marker
-          .filter((marker) => marker.type === 1)
-          .map((marker) => {
-            marker.content = {
-              prhsmknm: marker.prhsmknm,
-              content: marker.info,
-              id: marker._id,
-              imgurl: marker.imgurl,
-            };
-          });
-    });
+    //async function ex() {
+       GetMarkerList().then((res) => {
+        setFlag(true);
+        setMarkers(res.data.marker);
+        res.data.marker &&
+          res.data.marker
+            .filter((marker) => marker.type === 1)
+            .map((marker) => {
+              marker.content = {
+                prhsmknm: marker.prhsmknm,
+                content: marker.info,
+                id: marker._id,
+                imgurl: marker.imgurl,
+              };
+            });
+      })
+      setFlag(false);
+      console.log(markers.length);
   }, []);
+
+  // 레벨이 커지면 마커들의 정보를 추가하여 업데이트
+  useEffect(() => {
+    if (currentMarkers.length < markers.length){
+      if (level === 5) {
+        markers.map((marker) => {
+          var pos = new kakao.maps.LatLng(
+            Number(marker.latitude),
+            Number(marker.longitude)
+          );
+          // 현재 지도의 중심좌표
+          var center = new kakao.maps.LatLng(
+            myLocation.center.lat,
+            myLocation.center.lng
+          );
+          var poly = new kakao.maps.Polyline({
+            path: [center, pos],
+          });
+          //console.log(poly);
+          var dist = poly.getLength();
+          if (dist > 5000 && dist < 9000) {
+            // 5km ~ 10km 범위에 있는 마커들도 추가
+            if (currentMarkers.includes(marker) === false) {
+              currentMarkers.push(marker);
+            }
+          }
+        });
+      }
+      if (level === 6) {
+        markers.map((marker) => {
+          var pos = new kakao.maps.LatLng(
+            Number(marker.latitude),
+            Number(marker.longitude)
+          );
+          // 현재 지도의 중심좌표
+          var center = new kakao.maps.LatLng(
+            myLocation.center.lat,
+            myLocation.center.lng
+          );
+          var poly = new kakao.maps.Polyline({
+            path: [center, pos],
+          });
+          //console.log(poly);
+          var dist = poly.getLength();
+          if (dist > 9000) {
+            // 10km 밖에 있는 마커들을 추가
+            if (currentMarkers.includes(marker) === false) {
+              currentMarkers.push(marker);
+            }
+          }
+        });
+      }
+      setCurrentMarkers(currentMarkers);
+    }
+
+  }, [level]);
 
   // 마커 클릭 이벤트
   const EventMarkerContainer = ({ position, content }) => {
@@ -240,7 +330,7 @@ function MapPage() {
       setIsModal(false);
     };
 
-    console.log(content);
+    //console.log(content);
 
     return (
       <div>
@@ -332,10 +422,13 @@ function MapPage() {
             height: "100vh",
           }}
           level={4} //지도의 확대 레벨
+          onCenterChanged={(map) => {
+            setLevel(map.getLevel());
+          }} // 지도의 확대 레벨, 중심좌표 봔환
           draggable={true}
         >
-          {markers &&
-            markers.map((marker) => {
+          {currentMarkers &&
+            currentMarkers.map((marker) => {
               //console.log(markers);
               if (
                 (isVisible === "2" || isVisible === "0") &&
@@ -360,7 +453,6 @@ function MapPage() {
                 (isVisible === "2" || isVisible === "1") &&
                 marker.type === 1
               ) {
-                // console.log(markers);
                 return (
                   <EventMarkerContainer
                     key={marker._id}
