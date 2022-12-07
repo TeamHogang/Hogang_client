@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { useSearchParams } from "react-router-dom";
+import { Search } from "../api/articleApi";
 
 const Form = styled.form``;
 
@@ -32,14 +34,21 @@ const SearchButton = styled.button`
   display: flex;
 `;
 
-const SearchBar = () => {
+const SearchBar = (props) => {
+  // const [keyword, setKeyword] = useState();
+
+  const searchChange = (e) => {
+    props.setKeyword(e.target.value);
+    // console.log(keyword);
+  };
+
   return (
     <Form>
       <SearchBarContainer>
-        <Input type="text" placeholder="검색" />
-        <SearchButton type="submit">
+        <Input type="text" placeholder="검색" onChange={searchChange} />
+        {/* <SearchButton type="submit" onClick={searchHandler}>
           <FontAwesomeIcon icon={faSearch} size="xl" />
-        </SearchButton>
+        </SearchButton> */}
       </SearchBarContainer>
     </Form>
   );

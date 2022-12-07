@@ -70,58 +70,42 @@ const WriteButton = styled.button`
   transform: translate(-50%, 800%);
 `;
 
-function Board({ id }) {
+function Board(props) {
   const navigate = useNavigate();
 
-  // const { id } = useParams();
-
-  const [page, setPage] = useState(1);
-  const [load, setLoad] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [articles, setArticles] = useState([]);
+  const [keyword, setKeyword] = useState("");
 
-  const [ref, inView] = useInView();
-
-  const getArticles = useCallback(async () => {
-    setLoad(true);
-    // await axios.get().then((res) => {
-    //   setArticles((prevState) => [...prevState, res]);
-    // });
+  useEffect(() => {
     GetBoardThumbnail().then((res) => {
       console.log(res);
-      // setArticles((prevState) => [...prevState, res.data.board]);
       setArticles(res.data.board);
     });
-    setLoad(false);
-  }, [page]);
+  }, []);
 
-  useEffect(() => {
-    //getArticles 가 바뀔때마다 함수 실행
-    getArticles();
-  }, [getArticles]);
-
-  useEffect(() => {
-    // 마지막 게시물을 보고 있고, 로딩중이 아니라면
-    if (inView && !load) {
-      setPage((prevState) => prevState + 1);
-    }
-  }, [inView, load]);
-
-  const notices = [
-    {
-      title: "테스트1",
-      date: "2022-11-18",
-    },
-  ];
+  // useEffect(() => {
+  //   searched = articles.filter((article) => {
+  //     article.title.includes(keyword);
+  //   });
+  //   console.log(searched);
+  // }, [keyword]);
 
   const writeHandler = () => {
     navigate("/write", { state: { isEdit: false } });
   };
 
+  // console.log(searched);
+
+  const searched = articles.filter(
+    (article) =>
+      article.title.includes(keyword) || article.contents.includes(keyword)
+  );
+
   return (
     <Container>
       <Search>
-        <SearchBar />
+        <SearchBar setKeyword={setKeyword} />
       </Search>
       <NoticeContainer>
         <Notice>공지사항</Notice>
@@ -134,8 +118,8 @@ function Board({ id }) {
         ))} */}
       </NoticeContainer>
       <ArticleContainer>
-        {articles &&
-          articles.map((article, index) => {
+        {searched &&
+          searched.map((article, index) => {
             return (
               <FeedThumbnail
                 id={article._id}
@@ -143,7 +127,8 @@ function Board({ id }) {
                 content={article.content}
                 date={article.createdAt.substring(0, 10)}
                 key={index}
-              ></FeedThumbnail>
+                {...article}
+              />
             );
           })}
       </ArticleContainer>
