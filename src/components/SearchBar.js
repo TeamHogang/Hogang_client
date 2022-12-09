@@ -15,7 +15,7 @@ const SearchBarContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: "Jua", sans-serif;
+  font-family: "Do Hyeon", sans-serif;
 `;
 
 const Input = styled.input`
@@ -25,31 +25,18 @@ const Input = styled.input`
   padding: 0px 10px;
   display: flex;
   outline: none;
-`;
-
-const SearchButton = styled.button`
-  border: none;
-  background-color: white;
-  color: black;
-  /* margin-right: 20px; */
-  display: flex;
+  font-family: "Do Hyeon", sans-serif;
 `;
 
 const SearchBar = (props) => {
-  // const [keyword, setKeyword] = useState();
-
   const searchChange = (e) => {
     props.setKeyword(e.target.value);
-    // console.log(keyword);
   };
 
   return (
     <Form>
       <SearchBarContainer>
         <Input type="text" placeholder="검색" onChange={searchChange} />
-        {/* <SearchButton type="submit" onClick={searchHandler}>
-          <FontAwesomeIcon icon={faSearch} size="xl" />
-        </SearchButton> */}
       </SearchBarContainer>
     </Form>
   );

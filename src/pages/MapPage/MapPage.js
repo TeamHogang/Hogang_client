@@ -33,6 +33,7 @@ const SmokingAreaButton = styled.button`
   font-weight: 700;
   z-index: 999;
   opacity: 0.8;
+  font-family: "Do Hyeon", sans-serif;
   /* &:active {
     backgroud-color: #000000;
   } */
@@ -55,6 +56,7 @@ const NonSmokingAreaButton = styled.button`
   font-weight: 700;
   z-index: 999;
   opacity: 0.8;
+  font-family: "Do Hyeon", sans-serif;
 `;
 
 const UpdateLocationButton = styled.button`

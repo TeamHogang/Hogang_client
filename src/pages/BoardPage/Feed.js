@@ -15,7 +15,7 @@ const Container = styled.div`
   align-items: center;
   flex-direction: column;
   text-align: center;
-  font-family: "Jua", sans-serif;
+  font-family: "Do Hyeon", sans-serif;
 `;
 
 const BackButton = styled.div`
@@ -66,6 +66,7 @@ const Date = styled.div`
   justify-content: flex-start;
   align-items: flex-start;
   font-size: xx-small;
+  font-family: "Do Hyeon", sans-serif;
 `;
 
 const DeleteEditContainer = styled.div`
@@ -83,6 +84,7 @@ const Delete = styled.button`
   margin-right: 10px;
   border: none;
   background-color: white;
+  font-family: "Do Hyeon", sans-serif;
 `;
 
 const Edit = styled.div`
@@ -91,6 +93,7 @@ const Edit = styled.div`
   font-weight: 600;
   font-size: small;
   align-items: center;
+  font-family: "Do Hyeon", sans-serif;
 `;
 
 const Detail = styled.div`
@@ -164,6 +167,7 @@ const CommentDate = styled.div`
   align-items: center;
   font-size: xx-small;
   margin-left: auto;
+  font-family: "Do Hyeon", sans-serif;
   /* margin-right: 20px; */
 `;
 
@@ -178,6 +182,7 @@ const CommentDelete = styled.button`
   background-color: white;
   align-items: center;
   margin-right: 10px;
+  font-family: "Do Hyeon", sans-serif;
 `;
 
 const WriteCommentContainer = styled.div`
@@ -196,7 +201,7 @@ const CommentInput = styled.input`
   justify-content: center;
   border: none;
   font-weight: bold;
-
+  font-family: "Do Hyeon", sans-serif;
   width: 80vw;
   border-top: 1px solid #e6e8e7;
   outline: none;

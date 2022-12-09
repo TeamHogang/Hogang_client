@@ -10,7 +10,7 @@ const MapContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: "Jua", sans-serif;
+  font-family: "Do Hyeon", sans-serif;
 `;
 
 const AreaSelectButton = styled.button`
@@ -29,6 +29,7 @@ const AreaSelectButton = styled.button`
   font-weight: 700;
   z-index: 998;
   opacity: 0.8;
+  font-family: "Do Hyeon", sans-serif;
 `;
 
 function AddLocation() {

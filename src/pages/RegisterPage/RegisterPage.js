@@ -11,7 +11,7 @@ const Container = styled.div`
   align-items: center;
   flex-direction: column;
   text-align: center;
-  font-family: "Jua", sans-serif;
+  font-family: "Do Hyeon", sans-serif;
 `;
 
 const RegisterContainer = styled.div`
@@ -59,6 +59,7 @@ const Input = styled.input`
   border-radius: 5px;
   box-sizing: border-box;
   margin-top: 15px;
+  font-family: "Do Hyeon", sans-serif;
 `;
 
 const RegisterButton = styled.button`
@@ -74,6 +75,7 @@ const RegisterButton = styled.button`
   margin: auto 0px;
   background-color: white;
   border: 1px solid #e6e8e7;
+  font-family: "Do Hyeon", sans-serif;
 `;
 
 function RegisterPage() {

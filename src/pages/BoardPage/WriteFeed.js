@@ -12,7 +12,7 @@ const Container = styled.div`
   align-items: center;
   flex-direction: column;
   text-align: center;
-  font-family: "Jua", sans-serif;
+  font-family: "Do Hyeon", sans-serif;
 `;
 
 const SubHeaderContainer = styled.div`
@@ -54,6 +54,7 @@ const Title = styled.input`
   border: none;
   font-weight: bold;
   border-bottom: 1px solid #e6e8e7;
+  font-family: "Do Hyeon", sans-serif;
 `;
 
 const TextareaContainer = styled.div`
@@ -69,6 +70,7 @@ const TextArea = styled.textarea`
   border: none;
   width: 80vw;
   resize: none;
+  font-family: "Do Hyeon", sans-serif;
 `;
 
 function WriteFeed() {

@@ -16,7 +16,7 @@ const ModalContainer = styled.div`
   right: 0;
   background-color: rgba(0, 0, 0, 0.8);
   z-index: 999;
-  font-family: "Jua", sans-serif;
+  font-family: "Do Hyeon", sans-serif;
 `;
 
 const ModalWrapper = styled.div`
@@ -92,6 +92,7 @@ const CancelButton = styled.button`
   font-size: medium;
   width: 100px;
   border-radius: 10px;
+  font-family: "Do Hyeon", sans-serif;
 `;
 
 const SubmitButton = styled.button`
@@ -103,6 +104,7 @@ const SubmitButton = styled.button`
   border-radius: 10px;
   font-weight: 700;
   font-size: medium;
+  font-family: "Do Hyeon", sans-serif;
 `;
 
 const Detail = styled.textarea`
@@ -111,13 +113,11 @@ const Detail = styled.textarea`
   resize: none;
   display: flex;
   align-items: center;
-  font-family: LINESeedKR-Bd;
+  font-family: "Do Hyeon", sans-serif;
 `;
-const ContentLable = styled.label`
-  font-family: LINESeedKR-Bd;
-`;
+
 const ImgTitle = styled.div`
-  font-family: LINESeedKR-Bd;
+  font-family: "Do Hyeon", sans-serif;
   display: flex;
 `;
 const SmokingInfo = styled.div`
@@ -128,7 +128,7 @@ const SmokingInfo = styled.div`
 `;
 
 const LocationTitle = styled.div`
-  font-family: LINESeedKR-Bd;
+  font-family: "Do Hyeon", sans-serif;
 `;
 
 const LocationInfo = styled.div`
@@ -188,7 +188,9 @@ function DetailModal({ onClose, locationDetail, position }) {
     setContent(e.target.value);
   };
 
-  const offHandler = () => {};
+  const offHandler = () => {
+    onClose?.();
+  };
 
   return (
     <ModalContainer>
