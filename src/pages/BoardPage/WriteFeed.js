@@ -12,6 +12,7 @@ const Container = styled.div`
   align-items: center;
   flex-direction: column;
   text-align: center;
+  font-family: "Jua", sans-serif;
 `;
 
 const SubHeaderContainer = styled.div`
@@ -161,6 +162,7 @@ function WriteFeed() {
               placeholder="제목"
               value={title}
               onChange={titleChange}
+              required
             />
           </TitleContainer>
           <TextareaContainer>
@@ -169,6 +171,7 @@ function WriteFeed() {
               name="content"
               value={content}
               onChange={contentChange}
+              required
             ></TextArea>
           </TextareaContainer>
         </div>
@@ -181,6 +184,7 @@ function WriteFeed() {
               placeholder="제목"
               value={title}
               onChange={titleChange}
+              required
             />
           </TitleContainer>
           <TextareaContainer>
@@ -189,6 +193,7 @@ function WriteFeed() {
               name="content"
               value={content}
               onChange={contentChange}
+              required
             ></TextArea>
           </TextareaContainer>
         </div>
