@@ -19,8 +19,8 @@ const Container = styled.div`
 `;
 
 const BackButton = styled.div`
-  margin: 65px 20px 20px 20px;
-  padding-left: 20px;
+  margin: 65px 0 20px 0;
+  /* padding-left: 20px; */
   display: flex;
   width: 100vw;
   flex-direction: column;
@@ -30,7 +30,7 @@ const BackButton = styled.div`
 `;
 
 const FeedContainer = styled.div`
-  width: 100vw;
+  width: 80vw;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -166,7 +166,8 @@ const CommentDate = styled.div`
   justify-content: flex-end;
   align-items: center;
   font-size: xx-small;
-  margin-left: auto;
+  /* margin-left: auto; */
+  margin-left: 20px;
   font-family: "Do Hyeon", sans-serif;
   /* margin-right: 20px; */
 `;
@@ -181,6 +182,7 @@ const CommentDelete = styled.button`
   border: none;
   background-color: white;
   align-items: center;
+  margin-left: auto;
   margin-right: 10px;
   font-family: "Do Hyeon", sans-serif;
 `;
@@ -308,7 +310,11 @@ function Feed() {
     feed && (
       <Container>
         <BackButton onClick={backHandler}>
-          <FontAwesomeIcon icon={faLessThan} size="1x" />
+          <FontAwesomeIcon
+            icon={faLessThan}
+            size="1x"
+            style={{ marginLeft: "10px" }}
+          />
         </BackButton>
         <FeedContainer>
           <NickEditContainer>

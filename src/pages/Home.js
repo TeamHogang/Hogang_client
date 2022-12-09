@@ -110,7 +110,8 @@ const LogoutContainer = styled.div`
   width: 300px;
   border: 1px solid #e6e8e7;
   border-radius: 10px;
-  margin-top: 200px;
+  margin-top: 100px;
+  margin-bottom: 50px;
   color: #777777;
 `;
 
