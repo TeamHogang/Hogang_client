@@ -17,7 +17,7 @@ const HeaderContainer = styled.div`
   width: 100%;
   margin: 0px;
   padding: 10px 10px;
-  font-family: "Jua", sans-serif;
+  font-family: "Do Hyeon", sans-serif;
 `;
 
 const Logo = styled.img`

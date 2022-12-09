@@ -17,7 +17,7 @@ const Container = styled.div`
   align-items: center;
   flex-direction: column;
   text-align: center;
-  font-family: "Jua", sans-serif;
+  font-family: "Do Hyeon", sans-serif;
 `;
 
 const SubHeaderContainer = styled.div`

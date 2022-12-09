@@ -1,10 +1,7 @@
 /* eslint-disable */
-import React, { useCallback, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useInView } from "react-intersection-observer";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-// import axios from "axios";
-import Loader from "../../components/Loader";
 import SearchBar from "../../components/SearchBar";
 import { GetBoardThumbnail } from "../../api/articleApi";
 import FeedThumbnail from "../../components/FeedThumbnail";
@@ -15,6 +12,7 @@ const Container = styled.div`
   align-items: center;
   flex-direction: column;
   text-align: center;
+  font-family: "Do Hyeon", sans-serif;
 `;
 
 const Search = styled.div`
@@ -68,6 +66,7 @@ const WriteButton = styled.button`
   font-weight: 700;
   left: 50%;
   transform: translate(-50%, 800%);
+  font-family: "Do Hyeon", sans-serif;
 `;
 
 function Board(props) {
