@@ -16,6 +16,7 @@ const ModalContainer = styled.div`
   right: 0;
   background-color: rgba(0, 0, 0, 0.8);
   z-index: 999;
+  font-family: "Jua", sans-serif;
 `;
 
 const ModalWrapper = styled.div`
@@ -197,7 +198,7 @@ function DetailModal({ onClose, locationDetail, position }) {
             <FontAwesomeIcon icon={faTimes} />
           </BackButton>
         </ModalHeader>
-        <div>
+        <form>
           <FormInfo>
             <LocationContainer>
               <LocationTitle>흡연 구역 위치 정보</LocationTitle>
@@ -213,6 +214,7 @@ function DetailModal({ onClose, locationDetail, position }) {
                 value={content}
                 onChange={handleChange}
                 placeholder="내용을 입력해 주세요."
+                required
               />
             </TextareaContainer>
           </FormInfo>
@@ -220,7 +222,7 @@ function DetailModal({ onClose, locationDetail, position }) {
             <SubmitButton onClick={submitHandler}>제출하기</SubmitButton>
             <CancelButton onClick={handleClose}>취소</CancelButton>
           </ButtonContainer>
-        </div>
+        </form>
       </ModalWrapper>
     </ModalContainer>
   );

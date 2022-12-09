@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import appname from "../assets/img/appname.png";
 import { useNavigate } from "react-router-dom";
 
 const HeaderContainer = styled.div`
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
   background-color: white;
   /* border-bottom: 1px solid #fff; */
@@ -17,6 +17,7 @@ const HeaderContainer = styled.div`
   width: 100%;
   margin: 0px;
   padding: 10px 10px;
+  font-family: "Jua", sans-serif;
 `;
 
 const Logo = styled.img`
@@ -30,6 +31,7 @@ function Header() {
   const logoHandler = () => {
     navigate("/");
   };
+
   return (
     <HeaderContainer>
       <Logo src={appname} onClick={logoHandler} />

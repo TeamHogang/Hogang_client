@@ -15,6 +15,7 @@ const SearchBarContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  font-family: "Jua", sans-serif;
 `;
 
 const Input = styled.input`

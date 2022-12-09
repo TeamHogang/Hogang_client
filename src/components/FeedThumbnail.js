@@ -9,6 +9,7 @@ const Article = styled.div`
   justify-content: flex-start;
   flex-direction: column;
   padding: 10px 0;
+  font-family: "Jua", sans-serif;
 `;
 
 const ArticleNickname = styled.div`
@@ -17,6 +18,7 @@ const ArticleNickname = styled.div`
   justify-content: flex-start;
   font-size: small;
   margin-bottom: 5px;
+  font-family: "Jua", sans-serif;
 `;
 
 const Articletitle = styled.div`
@@ -24,13 +26,15 @@ const Articletitle = styled.div`
   justify-content: flex-start;
   font-size: medium;
   margin-bottom: 5px;
+  font-family: "Jua", sans-serif;
 `;
 
 const ArticleDate = styled.div`
-  color: #e6e8e7;
+  color: #777777;
   display: flex;
   justify-content: flex-start;
   font-size: x-small;
+  font-family: "Jua", sans-serif;
 `;
 
 function FeedThumbnail({ id, title, content, date }) {

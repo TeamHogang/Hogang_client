@@ -93,70 +93,6 @@ const PlusSmokingAreaButton = styled.button`
   opacity: 0.8;
 `;
 
-const MarkerDetailContainer = styled.div`
-  position: absolute;
-  left: 0;
-  bottom: -35px;
-  width: 288px;
-  height: 132px;
-  margin-left: -68px;
-  text-align: left;
-  overflow: hidden;
-  font-size: 12px;
-  font-family: "Malgun Gothic", dotum, "돋움", sans-serif;
-  line-height: 1.5;
-`;
-
-const DetailInfo = styled.div`
-  width: 286px;
-  height: 120px;
-  border-radius: 5px;
-  border-bottom: 2px solid #ccc;
-  border-right: 1px solid #ccc;
-  overflow: hidden;
-  background: #fff;
-  ::after {
-    content: "";
-    position: absolute;
-    margin-left: -12px;
-    left: 50%;
-    bottom: 0;
-    width: 22px;
-    height: 12px;
-    background: url("https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png");
-  }
-`;
-
-const DetailTitle = styled.div`
-  padding: 5px 0 0 10px;
-  height: 30px;
-  background: #eee;
-  border-bottom: 1px solid #ddd;
-  font-size: 18px;
-  font-weight: bold;
-`;
-
-const DetailBody = styled.div`
-  position: relative;
-  overflow: hidden;
-`;
-const DetailImg = styled.img`
-  /* position: absolute; */
-  /* top: 6px;
-  left: 5px;
-  width: 73px;
-  height: 71px;
-  border: 1px solid #ddd;
-  color: #888;
-  overflow: hidden; */
-`;
-
-const DetailContent = styled.div`
-  position: relative;
-  margin: 13px 0 0 90px;
-  height: 75px;
-`;
-
 function MapPage() {
   /*global kakao*/
   const navigate = useNavigate();
@@ -238,35 +174,33 @@ function MapPage() {
       });
     }
     setCurrentMarkers(currentMarkers);
-  },[flag]);
-    
-
+  }, [flag]);
 
   //서버에서 마커정보 받아오기
   useEffect(() => {
     //async function ex() {
-       GetMarkerList().then((res) => {
-        setFlag(true);
-        setMarkers(res.data.marker);
-        res.data.marker &&
-          res.data.marker
-            .filter((marker) => marker.type === 1)
-            .map((marker) => {
-              marker.content = {
-                prhsmknm: marker.prhsmknm,
-                content: marker.info,
-                id: marker._id,
-                imgurl: marker.imgurl,
-              };
-            });
-      })
-      setFlag(false);
-      console.log(markers.length);
+    GetMarkerList().then((res) => {
+      setFlag(true);
+      setMarkers(res.data.marker);
+      res.data.marker &&
+        res.data.marker
+          .filter((marker) => marker.type === 1)
+          .map((marker) => {
+            marker.content = {
+              prhsmknm: marker.prhsmknm,
+              content: marker.info,
+              id: marker._id,
+              imgurl: marker.imgurl,
+            };
+          });
+    });
+    setFlag(false);
+    console.log(markers.length);
   }, []);
 
   // 레벨이 커지면 마커들의 정보를 추가하여 업데이트
   useEffect(() => {
-    if (currentMarkers.length < markers.length){
+    if (currentMarkers.length < markers.length) {
       if (level === 5) {
         markers.map((marker) => {
           var pos = new kakao.maps.LatLng(
@@ -317,7 +251,6 @@ function MapPage() {
       }
       setCurrentMarkers(currentMarkers);
     }
-
   }, [level]);
 
   // 마커 클릭 이벤트
