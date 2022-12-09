@@ -200,7 +200,7 @@ function DetailModal({ onClose, locationDetail, position }) {
             <FontAwesomeIcon icon={faTimes} />
           </BackButton>
         </ModalHeader>
-        <form>
+        <div>
           <FormInfo>
             <LocationContainer>
               <LocationTitle>흡연 구역 위치 정보</LocationTitle>
@@ -224,7 +224,7 @@ function DetailModal({ onClose, locationDetail, position }) {
             <SubmitButton onClick={submitHandler}>제출하기</SubmitButton>
             <CancelButton onClick={handleClose}>취소</CancelButton>
           </ButtonContainer>
-        </form>
+        </div>
       </ModalWrapper>
     </ModalContainer>
   );
