@@ -11,6 +11,7 @@ const ModalContainer = styled.div`
   bottom: 0;
   right: 0;
   background-color: rgba(0, 0, 0, 0.8);
+  font-family: "Jua", sans-serif;
 `;
 
 const ModalWrapper = styled.div`

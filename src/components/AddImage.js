@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
 
 const UploadImage = styled.div`
   display: flex;
@@ -8,7 +10,6 @@ const UploadImage = styled.div`
 
 const CustomImg = styled.div``;
 const ImgWrap = styled.div`
-  /* margin: 30px; */
   width: 70vw;
 `;
 
@@ -66,8 +67,9 @@ const AddImage = ({ addImgSrc }) => {
     });
   };
 
-  const [imageSrc, setImageSrc] = useState("");
-  //console.log(imageSrc); // 디버깅용
+  const [imageSrc, setImageSrc] = useState(
+    "https://png.pngtree.com/png-vector/20191129/ourlarge/pngtree-image-upload-icon-photo-upload-icon-png-image_2047546.jpg"
+  );
 
   return (
     <UploadImage>
@@ -79,6 +81,7 @@ const AddImage = ({ addImgSrc }) => {
           onChange={(e) => {
             encodeFileToBase64(e.target.files[0]);
           }}
+          required
         />
         <InputImg2 defaultvalue="첨부파일" placeholder="첨부파일" disabled />
         <ImgLabel htmlFor="image">파일찾기</ImgLabel>

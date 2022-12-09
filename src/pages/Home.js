@@ -7,10 +7,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Auth } from "../api/userApi";
+import { Auth, Logout } from "../api/userApi";
 import { GetBoardThumbnail } from "../api/articleApi";
 import FeedThumbnail from "../components/FeedThumbnail";
-// import axios from "axios";
 
 const Container = styled.div`
   display: flex;
@@ -18,6 +17,7 @@ const Container = styled.div`
   align-items: center;
   flex-direction: column;
   text-align: center;
+  font-family: "Jua", sans-serif;
 `;
 
 const SubHeaderContainer = styled.div`
@@ -102,50 +102,25 @@ const BoardBottomContainer = styled.div`
   flex-direction: column;
 `;
 
-const Article = styled.div`
+const LogoutContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-weight: 600;
-  display: flex;
-  justify-content: flex-start;
-  flex-direction: column;
-  padding: 10px 0;
-`;
-
-const Articletitle = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  font-size: small;
-`;
-
-const ArticleDate = styled.div`
-  color: #e6e8e7;
-  display: flex;
-  justify-content: flex-start;
-  font-size: x-small;
+  width: 300px;
+  border: 1px solid #e6e8e7;
+  border-radius: 10px;
+  margin-top: 200px;
+  color: #777777;
 `;
 
 function Home() {
   const navigate = useNavigate();
   const [articles, setArticles] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isAuth, setIsAuth] = useState(false);
   const [nickname, setNickname] = useState();
-  // const articles = [
-  //   {
-  //     title: "테스트1",
-  //     date: "2022-11-18",
-  //   },
-  //   {
-  //     title: "테스트2",
-  //     date: "2022-11-18",
-  //   },
-  //   {
-  //     title: "테스트3",
-  //     date: "2022-11-18",
-  //   },
-  //   {
-  //     title: "테스트4",
-  //     date: "2022-11-18",
-  //   },
-  // ];
+
   const boardHandler = () => {
     navigate("/board");
   };
@@ -157,6 +132,19 @@ function Home() {
     navigate("/admin");
   };
 
+  var deleteCookie = function (name) {
+    document.cookie = name + "=; expires=Thu, 01 Jan 1999 00:00:10 GMT;";
+  };
+
+  const logoutHandler = () => {
+    Logout().then((res) => {
+      deleteCookie("x_auth");
+      window.localStorage.removeItem("X-AUTH-TOKEN");
+      alert("로그아웃 되었습니다.");
+      navigate("/login");
+    });
+  };
+
   useEffect(() => {
     // Home 페이지 들어오자마자 Admin인지 아닌지 axios를 통해 확인.
     //  if(axios~~) 해서 isAdmin true -> setIsAdmin(true);
@@ -166,6 +154,7 @@ function Home() {
     Auth(data).then((res) => {
       setIsAdmin(res.isAdmin);
       setNickname(res.nickname);
+      setIsAuth(res.isAuth);
       console.log(res);
       if (!res.isAuth) {
         alert("로그인 후 이용해주세요.");
@@ -235,6 +224,11 @@ function Home() {
             .slice(0, 5)}
         </BoardBottomContainer>
       </BoardContainer>
+      {isAuth ? (
+        <LogoutContainer onClick={logoutHandler}>로그아웃</LogoutContainer>
+      ) : (
+        <></>
+      )}
     </Container>
   );
 }

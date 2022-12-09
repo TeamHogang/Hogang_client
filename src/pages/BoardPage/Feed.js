@@ -15,6 +15,7 @@ const Container = styled.div`
   align-items: center;
   flex-direction: column;
   text-align: center;
+  font-family: "Jua", sans-serif;
 `;
 
 const BackButton = styled.div`
@@ -56,7 +57,7 @@ const Nickname = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
-  font-size: x-small;
+  font-size: small;
   font-weight: 700;
 `;
 
@@ -86,7 +87,7 @@ const Delete = styled.button`
 
 const Edit = styled.div`
   display: flex;
-  color: black;
+  color: #9bb7d6;
   font-weight: 600;
   font-size: small;
   align-items: center;
@@ -186,7 +187,6 @@ const WriteCommentContainer = styled.div`
   left: 0;
   width: 100vw;
   height: 50px;
-  /* box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; */
   z-index: 999;
 `;
 
@@ -201,6 +201,7 @@ const CommentInput = styled.input`
   border-top: 1px solid #e6e8e7;
   outline: none;
   margin: 0;
+  padding-left: 10px;
 `;
 
 const CommentButton = styled.div`
@@ -271,24 +272,19 @@ function Feed() {
   };
 
   const deleteCommentHandler = (e) => {
-    // console.log(e.target.value);
-    let commentId = e.target.value;
+    const commentId = e.target.value;
     console.log(commentId);
-    // console.log(commentId);
     if (window.confirm("댓글을 삭제하시겠습니까?")) {
+      console.log("zz");
       DeleteComment(commentId).then((res) => {
         console.log(res);
         if (res.status === 200) {
-          alert("삭제 완료되었습니다.");
+          alert("댓글이 삭제되었습니다.");
           window.location.replace(`/feed/${id}`);
         }
       });
     }
   };
-
-  // const editCommentHandler = () => {
-  //   // navigate("/write", { state: { isEdit: true, id: id } });
-  // };
 
   const commentHandler = () => {
     let data = {
@@ -362,9 +358,10 @@ function Feed() {
             placeholder="댓글을 작성해주세요"
             value={content}
             onChange={contentChange}
+            required
           ></CommentInput>
           <CommentButton onClick={commentHandler}>
-            <FontAwesomeIcon icon={faPaperPlane} />
+            <FontAwesomeIcon icon={faPaperPlane} color="#9bb7d6" />
           </CommentButton>
         </WriteCommentContainer>
       </Container>
